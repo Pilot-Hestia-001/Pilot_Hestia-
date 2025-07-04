@@ -1,20 +1,19 @@
 import axios from 'axios';
 import Box from '@mui/material/Box'
-import { useNavigate, Navigate, Link} from "react-router-dom";
+import handleNavigate from "../Utils/handleNavigate"
 import TextField from '@mui/material/TextField';
 import Button from  '@mui/material/Button'
 import { useState } from "react"
+import handleRegister from '../Utils/handleRegister';
 
 
 const Register = () => {
-    const navigate = useNavigate()
-
+   
     const [first_name, setFirst_name] =  useState([])
     const [last_name, setLast_name] =  useState([])
     const [email, setEmail] =  useState([])
     const [password, setPassword] =  useState([])
     const [error, setError] = useState([])
-
 
     const formData = {
         "first_name" : first_name,
@@ -23,29 +22,26 @@ const Register = () => {
         "password" : password,
     }
 
-
-    const handleRegister = async (formData) => {
-    try {
-      const res = await axios.post('/api/auth/register', formData);
-      localStorage.setItem('token', res.data.token);
-
-      setEmail("")
-      setPassword("")
-      setFirst_name("")
-      setLast_name("")
+    const createUser = async () => {
+        setError('');
+        
+        try {
+            const data = await handleRegister(formData);
+            localStorage.setItem('token', data.token);
+            
+            setEmail("")
+            setPassword("")
+            setFirst_name("")
+            setLast_name("")
       
-      setError("")
-      navigate('/')
-      // Redirect or update auth context
-    } catch (err) {
-      console.error('Registration failed', err);
-      setError(err.response?.data?.message || 'Registration failed');
+            handleNavigate("/")
+          } catch (err) {
+            console.error('Registration failed', err);
+            setError(err.response?.data?.message || 'Registration failed');
+          }
+       
     }
-  };
 
-  const handleLogin = () => {
-    navigate("/login")
-}
 
 return(
     <div style={containerStyle1}>
@@ -97,13 +93,13 @@ return(
              <br/>
                 <Button 
                     variant="contained"
-                    onClick={() => handleRegister(formData)}>
+                    onClick={() => createUser()}>
                     Submit
                 </Button>
 
                 <Button 
                     size="small"
-                    onClick={() => handleLogin()}>
+                    onClick={() => handleNavigate("/login")}>
                     Log in
                 </Button>
               

@@ -1,11 +1,12 @@
-import axios from 'axios';
 import Box from '@mui/material/Box'
-import { useNavigate, Navigate, Link} from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Button from  '@mui/material/Button'
 import { useState } from "react"
+import handleLogin from '../Utils/handleLogin';
+import handleNavigate from "../Utils/handleNavigate"
+
 const Login = () => {
-const navigate = useNavigate()
+
 
 const [email, setEmail] =  useState([])
 const [password, setPassword] =  useState([])
@@ -16,24 +17,23 @@ const formData = {
     "password" : password,
 }
 
-const handleLogin = async (formData) => {
+const loginUser = async(formData) => {
+    setError('');
+        
     try {
-      console.log(formData)
-      const res = await axios.post('/api/auth/login', formData);
-      localStorage.setItem('token', res.data.token);
-      setEmail("")
-      setPassword("")
-      setError("")
-      navigate('/')
-    } catch (err) {
-        console.error('Login failed', err);
-        setError(err.response?.data?.message || 'Login failed');
-    }
-
-  };
-
-const handleRegister = () => {
-    navigate("/register")
+        const data = await handleLogin(formData);
+        localStorage.setItem('token', data.token);
+        
+        setEmail("")
+        setPassword("")
+        setFirst_name("")
+        setLast_name("")
+  
+        handleNavigate("/")
+      } catch (err) {
+        console.error('Registration failed', err);
+        setError(err.response?.data?.message || 'Registration failed');
+      }
 }
 
     return(
@@ -70,13 +70,13 @@ const handleRegister = () => {
                  <br/>
                     <Button 
                         variant="contained"
-                        onClick={() => handleLogin(formData)}>
+                        onClick={() => loginUser(formData)}>
                         Submit
                     </Button>
 
                     <Button 
                         size="small"
-                        onClick={() => handleRegister()}>
+                        onClick={() => handleNavigate("/register")}>
                         Register
                     </Button>
                   
