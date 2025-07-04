@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
+
 
 const handleRegister = (endpoint) => {
+    const navigate = useNavigate();
     navigate(endpoint)
 }
 

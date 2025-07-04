@@ -1,7 +1,13 @@
+import HamburgerMenu from "../Components/Menu";
+
 const Home = () => {
    return(
       <>
       <div id = "container" style={containerStyle1}>
+
+         <div style={{"position": "absolute", "top": "5px", "left" : "10px"}}>
+            <HamburgerMenu></HamburgerMenu>
+         </div>
         <div>
            <h2>Earn Points. Get Rewards. Power Your Community.</h2>
            <center>
