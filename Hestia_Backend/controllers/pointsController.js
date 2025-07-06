@@ -12,6 +12,17 @@ const getUserPoints = async (req, res) => {
   }
 };
 
+const getAllpoints = async (req, res) => {
+  try{
+    const points = await Points.getAllpoints(req.user);
+    if (points === null) return res.status(404).json({ message: 'Points record not found' });
+    res.json(points);
+  } catch(err) {
+    console.error('Error getting points:', err);
+    res.status(500).json({ message: 'Server error retrieving points' })
+  }
+}
+
 // Create a points record for new users
 const createUserPoints = async (req, res) => {
   try {
@@ -25,5 +36,6 @@ const createUserPoints = async (req, res) => {
 
 module.exports = {
   getUserPoints,
+  getAllpoints,
   createUserPoints,
 };

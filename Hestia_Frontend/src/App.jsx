@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import MemberPage from "./pages/MemberPage";
 import ProfilePage from "./pages/Profile";
+import RewardsPage from "./pages/RewardsPage";
 import VendorsListPage from "./pages/VendorsListPage";
 
 
@@ -16,8 +17,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="VendorsListPage" element={<VendorsListPage />}/>
-        <Route path="/MemberPage" element={<MemberPage />} />
+        <Route path="vendorList" element={<VendorsListPage />}/>
+        <Route path="/member" element={<MemberPage />} />
+        <Route path="/rewards" element={<RewardsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

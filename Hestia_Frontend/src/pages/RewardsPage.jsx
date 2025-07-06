@@ -1,6 +1,6 @@
 import HamburgerMenu from "../Components/Menu";
 
-const MemberPage = () => {
+const RewardsPage = () => {
  return(
     <>
         <div style={{"position": "absolute", "top": "5px", "left" : "10px"}}>
@@ -10,4 +10,4 @@ const MemberPage = () => {
  )
 }
 
-export default MemberPage;
+export default RewardsPage;

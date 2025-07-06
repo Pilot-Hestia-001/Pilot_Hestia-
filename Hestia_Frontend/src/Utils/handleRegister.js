@@ -8,8 +8,8 @@ const handleRegister = async (formData) => {
       
       // Redirect or update auth context
     } catch (err) {
-      console.error('Registration failed', err);
-      setError(err.response?.data?.message || 'Registration failed');
+      console.error('register failed', err);
+      return err
     }
   };
 

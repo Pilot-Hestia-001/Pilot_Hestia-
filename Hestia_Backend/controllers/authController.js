@@ -37,12 +37,17 @@ const register = async (req, res) => {
 }
 
 const logout = (req, res) => {
+  try{
     res.clearCookie('token', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
     });
     res.status(200).json({ message: 'Logged out successfully' });
+  } catch(e) {
+    console.error("error logging out")
+  }
+    
   };
   
   const login = async (req, res) => {

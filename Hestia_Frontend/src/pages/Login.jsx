@@ -3,10 +3,10 @@ import TextField from '@mui/material/TextField';
 import Button from  '@mui/material/Button'
 import { useState } from "react"
 import handleLogin from '../Utils/handleLogin';
-import handleNavigate from "../Utils/handleNavigate"
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-
+const navigate = useNavigate();
 
 const [email, setEmail] =  useState([])
 const [password, setPassword] =  useState([])
@@ -26,13 +26,11 @@ const loginUser = async(formData) => {
         
         setEmail("")
         setPassword("")
-        setFirst_name("")
-        setLast_name("")
   
-        handleNavigate("/")
+        navigate("/")
       } catch (err) {
-        console.error('Registration failed', err);
-        setError(err.response?.data?.message || 'Registration failed');
+        console.error('login failed', err);
+        setError(err.response?.data?.message || 'Log in failed');
       }
 }
 
@@ -76,7 +74,7 @@ const loginUser = async(formData) => {
 
                     <Button 
                         size="small"
-                        onClick={() => handleNavigate("/register")}>
+                        onClick={() => navigate("/register")}>
                         Register
                     </Button>
                   

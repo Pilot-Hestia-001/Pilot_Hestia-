@@ -7,6 +7,13 @@ class VendorModel {
       .returning('*');
   }
 
+  static async addImgById({ id, img }) {
+    return await db('vendors')
+      .where({ id })
+      .update({ img })
+      .returning('*');
+  }
+  
   static async findByEmail(email) {
     const user = await db('vendors').where({ email }).first();
     return user;
@@ -28,6 +35,14 @@ class VendorModel {
         reset_token: token,
         reset_token_expires: expiresAt
       });
+  }
+
+  static async getAllVendors(){
+    try{
+      return db('vendors');
+    } catch(e) {
+      console.log("error fetching vendors")
+    }
   }
 
   static async findByResetToken(token) {

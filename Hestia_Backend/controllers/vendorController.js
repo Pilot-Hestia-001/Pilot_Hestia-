@@ -36,6 +36,41 @@ const register = async (req, res) => {
   }
 };
 
+const getAllVendors = async (req, res) => {
+  try {
+    const allVendors =  await VendorModel.getAllVendors()
+    res.json(allVendors)
+  } catch(e) {
+     console.error("problem with getting vendors")
+  }
+}
+
+const updateVendorImage = async (req, res) => {
+  const { id } = req.params;
+  const { img } = req.body;
+
+  try {
+    if (!img) {
+      return res.status(400).json({ error: 'Image URL or path is required' });
+    }
+
+    const updatedVendor = await VendorModel.addImgById({ id, img });
+
+    if (!updatedVendor) {
+      return res.status(404).json({ error: 'Vendor not found' });
+    }
+
+    res.json({
+      message: 'Vendor image updated successfully',
+      vendor: updatedVendor,
+    });
+  } catch (err) {
+    console.error('Error updating vendor image:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
 const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -90,4 +125,6 @@ module.exports = {
   login,
   logout,
   forgotPassword,
+  updateVendorImage,
+  getAllVendors,
 };

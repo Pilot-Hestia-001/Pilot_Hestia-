@@ -1,13 +1,14 @@
 import axios from 'axios';
 import Box from '@mui/material/Box'
-import handleNavigate from "../Utils/handleNavigate"
 import TextField from '@mui/material/TextField';
 import Button from  '@mui/material/Button'
 import { useState } from "react"
-import handleRegister from '../Utils/handleRegister';
+import { useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
+
+    const navigate = useNavigate();
    
     const [first_name, setFirst_name] =  useState([])
     const [last_name, setLast_name] =  useState([])
@@ -34,10 +35,10 @@ const Register = () => {
             setFirst_name("")
             setLast_name("")
       
-            handleNavigate("/")
+            navigate("/")
           } catch (err) {
             console.error('Registration failed', err);
-            setError(err.response?.data?.message || 'Registration failed');
+            setError(err.response?.data?.message);
           }
        
     }
@@ -99,7 +100,7 @@ return(
 
                 <Button 
                     size="small"
-                    onClick={() => handleNavigate("/login")}>
+                    onClick={() => navigate("/login")}>
                     Log in
                 </Button>
               

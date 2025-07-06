@@ -4,12 +4,15 @@ const {
   register,
   login,
   logout,
-  forgotPassword
+  forgotPassword,
+  updateVendorImage,
+  getAllVendors
 } = require('../controllers/vendorController');
-
+router.get('/all', getAllVendors)
 router.post('/register', register);
 router.post('/login', login);
 router.post('/logout', logout);
 router.post('/forgot-password', forgotPassword);
+router.put('/:id/image', updateVendorImage);
 
 module.exports = router;

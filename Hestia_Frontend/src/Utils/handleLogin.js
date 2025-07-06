@@ -6,9 +6,8 @@ const handleLogin = async (formData) => {
       return res.data
     } catch (err) {
         console.error('Login failed', err);
-        setError(err.response?.data?.message || 'Login failed');
+        return err
     }
-
   };
 
   export default handleLogin;

@@ -5,6 +5,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem'
 import HotelClassOutlinedIcon from '@mui/icons-material/HotelClassOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -19,6 +22,18 @@ const HamburgerMenu = () => {
       setAnchorEl(null);
       navigate(link);
     };
+    
+    const logout = async(link) => {
+        try {
+          const res = await axios.post("/api/auth/logout");
+          if(!res) console.error("couldn't log out")
+          console.log(res)
+        
+          navigate(link);
+        } catch(error){
+          console.log(error)
+        }
+    }
   
     return (
       <div>
@@ -42,11 +57,11 @@ const HamburgerMenu = () => {
             },
           }}
         >
-         <MenuItem onClick={() => handleClose("profile")}>Profile</MenuItem>
+         <MenuItem onClick={() => handleClose("/profile")}> <PersonOutlineOutlinedIcon fontSize='small'/>&ensp;Profile</MenuItem>
          <MenuItem onClick={() => handleClose("/")}><HomeOutlinedIcon fontSize='small'/>&ensp;Home</MenuItem>
-         <MenuItem onClick={() => handleClose("rewards")}> <HotelClassOutlinedIcon fontSize='small'/>&ensp;Rewards</MenuItem>
-         <MenuItem onClick={() => handleClose("member")}>Member</MenuItem>
-         <MenuItem onClick={() => handleClose("logout")} style={{"color" : "red"}}>Logout</MenuItem>
+         <MenuItem onClick={() => handleClose("/rewards")}> <HotelClassOutlinedIcon fontSize='small'/>&ensp;Rewards</MenuItem>
+         <MenuItem onClick={() => handleClose("/vendorList")}> <HandshakeOutlinedIcon fontSize='small'/>&ensp;Member</MenuItem>
+         <MenuItem onClick={() => logout("/login")} style={{"color" : "red"}}>Logout</MenuItem>
         </Menu>
       </div>
     );
