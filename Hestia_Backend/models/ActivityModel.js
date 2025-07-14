@@ -2,10 +2,10 @@ const db = require('../db')
 
 class ActivityModel{
     //make active true and generate code in controller
-    static async createActivity({title, description, points}){
+    static async createActivity({title, description, points, img}){
         const active =  true;
         return await db('activities')
-        .insert({title, description, points, active })
+        .insert({title, description, points, active, img})
         .returning('*');
     }
 

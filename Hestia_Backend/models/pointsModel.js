@@ -2,7 +2,8 @@ const db = require('../db');
 
 class Points{
       static async getByUserId(userId) {
-        return db('points').where({ user_id: userId }).first();
+        const record = await db('points').where({ user_id: userId }).first()
+        return record?.balance || 0
       }
 
       static async getAllpoints(){

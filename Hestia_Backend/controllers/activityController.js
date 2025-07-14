@@ -4,9 +4,10 @@ const Points = require('../models/pointsModel');
 
 
 const createActivity = async (req, res) =>{
-    const { title, description, points } = req.body;
+    const { title, description, points, img } = req.body;
   try {
-    const activity = await ActivityModel.createActivity({ title, description, points });
+    const activity = await ActivityModel.createActivity({ title, description, points, img });
+    
     res.status(201).json(activity);
   } catch (err) {
     console.error('Error creating activity:', err);

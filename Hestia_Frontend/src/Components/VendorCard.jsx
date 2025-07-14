@@ -1,20 +1,31 @@
 const Vendor = ({img, business_name, onClick, isSelected}) => {
-  console.log(img)
+  
     return(
         <>
-        <div onClick={onClick} style={{ backgroundColor: "white", width: "120px", height: "150px", cursor: "pointer", borderRadius: "10px", boxShadow: isSelected ?  "0 0 10px orange" : "0 0 3px orange" , border: isSelected ? "3px solid orange" : "",  padding: "4px"}}> 
-       
-          <img style={{width: "120px", height: "120px", borderRadius: "50%"}} src={img} alt="vendor_img" />
+        <div onClick={onClick} style={{...cardStyle, boxShadow: isSelected ? "0 0 10px #FF5F00" : "0 0 3px #FF5F00", border: isSelected ? "3px solid #FF5F00" : "none",}}>
+          <img style={{width: "110px", height: "110px", borderRadius: "50%"}} src={img} alt="vendor_img" />
       
           <div style={titleContainer}> 
            
-            <h4 style={title}>{business_name}</h4>
+            <h4 style={{...title, color: isSelected ? "#FF5F00" : "grey"}}>{business_name}</h4>
           
           </div>
         </div>  
         </>
     )
 }
+const cardStyle = {
+  backgroundColor: "white",
+  width: "120px",
+  height: "150px",
+  cursor: "pointer",
+  borderRadius: "10px",
+  padding: "4px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center"
+};
 
 const titleContainer = {
   width: "120px",

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const UserModel = require('../models/userModel');
+const PointsModel = require("../models/pointsModel")
 require('dotenv').config();
 
 const generateToken = (userId) => {
@@ -25,6 +26,8 @@ const register = async (req, res) => {
       email,
       password: hashedPassword,
     });
+
+    await PointsModel.createForUser(newUser.id);
 
     const token = generateToken(newUser.id);
     res.status(201).json({token})

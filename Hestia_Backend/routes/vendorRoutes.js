@@ -6,9 +6,11 @@ const {
   logout,
   forgotPassword,
   updateVendorImage,
-  getAllVendors
+  getAllVendors,
+  getVendorByName
 } = require('../controllers/vendorController');
-router.get('/all', getAllVendors)
+router.get('/all', getAllVendors);
+router.get('/find/:name', getVendorByName);
 router.post('/register', register);
 router.post('/login', login);
 router.post('/logout', logout);

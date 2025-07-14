@@ -6,7 +6,7 @@ const handleLogin = async (formData) => {
       return res.data
     } catch (err) {
         console.error('Login failed', err);
-        return err
+        throw err
     }
   };
 

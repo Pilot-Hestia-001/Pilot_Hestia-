@@ -18,6 +18,10 @@ module.exports = {
     directory: './migrations' 
   },
 
+  seeds: {
+    directory: './seeds'
+  }
+
   // staging: {
   //   client: 'postgresql',
   //   connection: {

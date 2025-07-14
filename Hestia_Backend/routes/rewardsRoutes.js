@@ -8,7 +8,7 @@ const protect = require('../middleware/authMiddleware');
 router.get('/:vendor_id', getVendorRewards);
 router.put('/redeem', redeemCode)
 router.put('/purchase', protect, purchaseReward)
-router.post('/create', protect, createReward);
+router.post('/create', createReward);
 
 
 module.exports = router;
