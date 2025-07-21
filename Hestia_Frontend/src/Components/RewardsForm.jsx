@@ -7,7 +7,6 @@ import axios from "axios";
 const RewardForm = () => {
     const [businessName, setBusinessName] =  useState("")
     const [title, setTitle] =  useState("")
-    const [description, setDescription] =  useState("")
     const [cost, setCost] =  useState("")
     const [quantity, setQuantity] = useState("")
     const [UsdPrice, setUsdPrice] = useState("")
@@ -27,7 +26,7 @@ const RewardForm = () => {
       };
 
       const handleSubmit = async () => {
-        if (!title || !description || !cost || !quantity || !UsdPrice || !image) {
+        if (!title || !cost || !quantity || !UsdPrice || !image) {
           setError("All fields including image are required.");
           return;
         }
@@ -82,7 +81,6 @@ const RewardForm = () => {
             const rewardData = {
                 vendor_id: id,
                 title,
-                description,
                 cost,
                 quantity, 
                 UsdPrice,
@@ -90,14 +88,15 @@ const RewardForm = () => {
               };
               console.log(rewardData)
             const res = await axios.post('/api/rewards/create', rewardData)
-            if (!res.ok) throw new Error('Failed to submit reward');
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error('Failed to submit reward');
+              }
             alert("Reward submitted!");
         } catch(e){
             console.error("Error occured while creating rewards")
         }
         setBusinessName("");
         setTitle("");
-        setDescription("");
         setImage("");
         setCost("");
         setQuantity("");
@@ -122,14 +121,6 @@ const RewardForm = () => {
                     variant="outlined" 
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
-                />
-            <br/>
-            <TextField 
-                    id="outlined-basic" 
-                    label="Description" 
-                    variant="outlined" 
-                    onChange={(e) => setDescription(e.target.value)}
-                    value={description}
                 />
             <br/>
                 <TextField 

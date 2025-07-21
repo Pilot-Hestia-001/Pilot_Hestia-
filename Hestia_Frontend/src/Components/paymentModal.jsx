@@ -40,7 +40,7 @@ const PayemntModal = ({user, handleUserRefresh}) => {
         const res = await axios.get("/api/activities/retrieve")
         const activityList = res?.data
         setActivities(activityList)
-        console.log(res?.data)
+       
       } catch(e) {
         console.log("couldn't fetch activities")
       }
@@ -61,7 +61,7 @@ const PayemntModal = ({user, handleUserRefresh}) => {
         
          try{
             const res = axios.post("/api/activities/complete", data )
-            console.log("person paid!")
+            
             handleUserRefresh()
             handleClose()
          } catch(e){
@@ -71,7 +71,7 @@ const PayemntModal = ({user, handleUserRefresh}) => {
       };
 
       const handleCardClick = (activity) => {
-        console.log("Activity selected:", activity);
+        
         setSelectedActivity(activity); // Save selected activity
       };
   

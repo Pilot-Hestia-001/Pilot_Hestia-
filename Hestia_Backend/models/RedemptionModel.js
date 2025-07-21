@@ -2,7 +2,7 @@ const db = require('../db');
 
 class RedemptionModel {
   // Create a redemption entry (optional, you may handle everything in reward_codes)
-  static async create({ user_id, vendor_id, reward_id, code }) {
+  static async create({ user_id, vendor_id, reward_id, code, discount }) {
     const [redemption] = await db('reward_redemptions')
       .insert({
         user_id,
@@ -10,6 +10,7 @@ class RedemptionModel {
         reward_id,
         code,
         status: 'pending',
+        discount,
       })
       .returning('*');
     return redemption;

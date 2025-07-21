@@ -22,6 +22,17 @@ const getVendorRewards = async (req, res) => {
     }
   };
 
+const getRewardById = async (req, res) =>{
+  const {id} = req.params
+  try{
+    const reward = await RewardModel.getById(id);
+    res.json(reward)
+  } catch(e) {
+    console.error('Error fetching rewards:', err);
+    res.status(404).json({ message: 'Failed to fetch rewards' });
+  }
+}
+
   const updateVendorImage = async (req, res) => {
     const { id } = req.params;
     const { img } = req.body;
@@ -53,12 +64,19 @@ const getVendorRewards = async (req, res) => {
       const rewardData = {
         vendor_id: req.body.vendor_id, // assuming vendor is authenticated
         title: req.body.title,
-        description: req.body.description,
         cost: req.body.cost,
         quantity: req.body.quantity,
         UsdPrice: req.body.UsdPrice,
         active: true,
         img: req.body.img,
+        sizes: {
+          xs: true,
+          s: true,
+          m: true,
+          l: true,
+          xl: true,
+          xxl: true
+        }
       };
   
       const newReward = await RewardModel.createReward(rewardData);
@@ -69,4 +87,4 @@ const getVendorRewards = async (req, res) => {
     }
   };
 
-  module.exports = { getVendorRewards, createReward, getAllRewards};
+  module.exports = { getVendorRewards, createReward, getAllRewards, getRewardById};

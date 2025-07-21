@@ -76,19 +76,19 @@ const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 
 const rewardRoutes = require('./routes/rewardsRoutes');
-app.use('/api/rewards', rewardRoutes)
+app.use('/api/rewards', rewardRoutes);
 
 const activtiyRoutes =  require('./routes/activityRoutes');
 app.use('/api/activities', activtiyRoutes);
 
 const pointsRoutes = require('./routes/pointsRoutes');
-app.use('/api/points', pointsRoutes)
+app.use('/api/points', pointsRoutes);
 
 const userRoutes =  require('./routes/userRoutes');
 app.use('/api/user', userRoutes);
 
 const vendorRoutes = require('./routes/vendorRoutes');
-app.use('/api/vendor', vendorRoutes)
+app.use('/api/vendor', vendorRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);

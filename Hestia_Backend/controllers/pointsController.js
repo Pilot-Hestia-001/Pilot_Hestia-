@@ -4,7 +4,6 @@ const Points = require('../models/pointsModel');
 const getUserPoints = async (req, res) => {
   try {
     const points = await Points.getByUserId(req.user);
-    console.log("points " + points)
     if (points == null) return res.status(404).json({ message: 'Points record not found' });
     res.json(points);
   } catch (err) {

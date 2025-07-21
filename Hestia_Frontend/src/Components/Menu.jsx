@@ -64,13 +64,15 @@ const HamburgerMenu = () => {
           >
           <MenuItem onClick={() => handleClose("/profile")}> <PersonOutlineOutlinedIcon fontSize='small'/>&ensp;Profile</MenuItem>
           <MenuItem onClick={() => handleClose("/home")}><HomeOutlinedIcon fontSize='small'/>&ensp;Home</MenuItem>
-          <MenuItem onClick={() => handleClose("/vendorList")}> <HotelClassOutlinedIcon fontSize='small'/>&ensp;Rewards</MenuItem>
+          <MenuItem onClick={() => handleClose("/rewards")}> <HotelClassOutlinedIcon fontSize='small'/>&ensp;Rewards</MenuItem>
           <MenuItem onClick={() => handleClose("/member")}> <HandshakeOutlinedIcon fontSize='small'/>&ensp;Member</MenuItem>
           <MenuItem onClick={() => handleLogout("/")} style={{"color" : "red"}}>Logout</MenuItem>
           </Menu>
         </div>
-
-        <Points></Points>
+          <div>
+          <Points></Points>
+          </div>
+        
       </div>
     );
 }

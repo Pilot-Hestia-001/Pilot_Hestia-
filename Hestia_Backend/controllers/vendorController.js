@@ -45,6 +45,18 @@ const getAllVendors = async (req, res) => {
   }
 }
 
+const getVendorById = async (req, res) => {
+  const { vendor_id } = req.params
+  const id = vendor_id
+
+  try{
+    const vendor = await VendorModel.findById(id)
+    res.json(vendor)
+  } catch(e){
+    console.error("Issue retrieving vendor")
+  }
+}
+
 const getVendorByName = async (req, res) =>{
   const { name } = req.params;
   console.log("name: " + name)
@@ -140,5 +152,6 @@ module.exports = {
   forgotPassword,
   updateVendorImage,
   getAllVendors,
-  getVendorByName
+  getVendorByName,
+  getVendorById
 };

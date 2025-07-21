@@ -17,7 +17,6 @@ const Points = () => {
              });
             
             setPoints(res.data)
-        
         } catch(e){
             console.error("couldn't get points")
         }

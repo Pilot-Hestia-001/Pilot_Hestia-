@@ -7,10 +7,12 @@ const {
   forgotPassword,
   updateVendorImage,
   getAllVendors,
-  getVendorByName
+  getVendorByName,
+  getVendorById
 } = require('../controllers/vendorController');
 router.get('/all', getAllVendors);
 router.get('/find/:name', getVendorByName);
+router.get('/id/:vendor_id',getVendorById)
 router.post('/register', register);
 router.post('/login', login);
 router.post('/logout', logout);

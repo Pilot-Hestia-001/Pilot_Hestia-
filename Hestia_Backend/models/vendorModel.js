@@ -25,7 +25,7 @@ class VendorModel {
   }
 
   static async findById(id) {
-    return await db('vendor').where({ id }).first();
+    return await db('vendors').where({ id }).first();
   }
   
   static async setResetToken(email, token, expiresAt) {

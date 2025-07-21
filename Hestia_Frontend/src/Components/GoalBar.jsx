@@ -9,7 +9,6 @@ const GoalBar = () =>{
         const fetchPoints = async () => {
           try {
             const res = await axios.get("/api/points/getAll");
-            console.log(res.data);
             setPointsEarned(res.data)
           } catch (error) {
             console.log("No points received", error);
@@ -48,7 +47,7 @@ const GoalBar = () =>{
  return(
     <div style={container}>
       <div style={{margin: "1em"}}>
-         <h3 style={textStyle}><FlagIcon/>  Goal to Scholarship Giveaway!</h3>
+         <h3 style={textStyle}><FlagIcon/> Goal to Scholarship Giveaway!</h3>
         <div id="bar" style={bar}>
         <div style={progress}>
         </div>
