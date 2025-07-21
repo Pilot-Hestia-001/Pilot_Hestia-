@@ -100,17 +100,17 @@ The **Minimum Viable Product** includes:
 
 **Frontend**:  
 - React  
-- Tailwind CSS *(optional for speed)*  
+- Tailwind CSS 
 - QR Scanner JS Library  
 
 **Backend**:  
-- Node.js + Express (or Firebase alternative)
+- Node.js + Express 
 
 **Database**:  
-- PostgreSQL *(preferred)* or Firebase Firestore
+- PostgreSQL 
 
 **Auth**:  
-- Firebase Auth **OR** JWT + bcrypt
+- JWT + bcrypt
 
 **Vendor Verification (Future)**:  
 - Manual  
@@ -136,13 +136,6 @@ You can build this app with:
 ## 📬 Contact
 
 For questions or collaboration:
-- Email: [your_email@example.com]
-- Instagram: [@projecthestia]
-- Website: [Coming Soon]
-
----
-
-## License
-
-MIT License
+- Email: elijah@projecthestia.org
+- LinkedIn: linkedin.com/in/elijah-hawes-a3973b219
 
