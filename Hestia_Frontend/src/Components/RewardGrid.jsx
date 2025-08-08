@@ -71,7 +71,6 @@ const flex = {
 
 const title = {
   margin: 0,
-  fontSize: "", // auto-adjusts size
   overflow: "hidden",
   textOverflow: "ellipsis",
   wordBreak: "break-word",
