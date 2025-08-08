@@ -10,6 +10,7 @@ const generateToken = (userId) => {
         expiresIn: process.env.JWT_EXPIRES_IN,
     });
 }
+
 const register = async (req, res) => {
     const {first_name, last_name, email, password} = req.body;
 
@@ -49,8 +50,7 @@ const logout = (req, res) => {
     res.status(200).json({ message: 'Logged out successfully' });
   } catch(e) {
     console.error("error logging out")
-  }
-    
+  } 
   };
   
   const login = async (req, res) => {
@@ -69,7 +69,7 @@ const logout = (req, res) => {
   
     const token = generateToken(existingUser.id);
     res.json({ token });
-  } catch {
+  } catch(err){
     console.error('Login error:', err);  // helpful for debugging
     res.status(500).json({ message: 'Something went wrong during login' });
   }

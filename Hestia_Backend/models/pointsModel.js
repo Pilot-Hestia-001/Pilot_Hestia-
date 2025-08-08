@@ -11,8 +11,6 @@ class Points{
         try{
           const allPoints = await db("points"); 
 
-          console.log(allPoints)
-
           if (!Array.isArray(allPoints) || allPoints.length === 0) {
             console.error("No points fetched or result was invalid");
             return 0;

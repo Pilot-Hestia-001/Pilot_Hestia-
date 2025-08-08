@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import Button from  '@mui/material/Button'
 import TextField from '@mui/material/TextField';
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const RewardForm = () => {
     const [businessName, setBusinessName] =  useState("")
@@ -38,7 +39,7 @@ const RewardForm = () => {
             const name = businessName
             const encodedName = encodeURIComponent(name);
             console.log(name)
-            const vendorRes = await axios.get(`/api/vendor/find/${encodedName}`)
+            const vendorRes = await axios.get(`${API_URL}/api/vendor/find/${encodedName}`)
             console.log("Vendor data:", vendorRes.data);
             id = vendorRes.data.id;
 
@@ -56,7 +57,7 @@ const RewardForm = () => {
             const formData = new FormData();
             formData.append('image', image);
 
-            const uploadRes = await axios.post('/api/upload', formData, {
+            const uploadRes = await axios.post(`${API_URL}/api/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                   },

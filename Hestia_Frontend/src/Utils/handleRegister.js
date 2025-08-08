@@ -1,9 +1,10 @@
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 const handleRegister = async (formData) => {
     try {
-      const res = await axios.post('/api/auth/register', formData);
+      const res = await axios.post(`${API_URL}/api/auth/register`, formData);
       const data = res.data;
 
       localStorage.setItem('token', data.token);

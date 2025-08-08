@@ -48,7 +48,6 @@ exports.seed = async function(knex) {
       vendor_id: 1,
       title: "Exclusive Bandana",
       cost: 1000,
-      quantity: 0,
       UsdPrice: 100,
       img: "https://static.wixstatic.com/media/25123e_f5c233c471534724917c78dba4dc75ac~mv2.png/v1/fill/w_918,h_918,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/25123e_f5c233c471534724917c78dba4dc75ac~mv2.png",
       sizes: {

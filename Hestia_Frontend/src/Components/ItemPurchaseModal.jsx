@@ -11,6 +11,7 @@ import { useAnimatedNumber } from "../Utils/animatePoints";
 import { useNavigate } from 'react-router-dom';
 import Coupon from './Coupon'
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const style = {
   position: 'absolute',
@@ -39,6 +40,7 @@ const ItemPurchaseModal = ({id, img, rewardTitle, quantity, cost, usdPrice, vend
     const [selectedSize, setSelectedSize] = useState(null)
     const [discount, setDiscount] = useState(null)
     const [code, setCode] = useState(null)
+    const [order_number, setOrderNum] = useState(null)
     const [paid, setPaid] = useState(false)
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => {
@@ -61,7 +63,7 @@ const ItemPurchaseModal = ({id, img, rewardTitle, quantity, cost, usdPrice, vend
   useEffect(() => {
     const fetchUser = async () => {
       try{
-        const res = await axios.get("/api/user/me",{ 
+        const res = await axios.get(`${API_URL}/api/user/me`,{ 
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -81,7 +83,7 @@ const ItemPurchaseModal = ({id, img, rewardTitle, quantity, cost, usdPrice, vend
   useEffect(() => {
     const fetchActivities = async () => {
       try{
-        const res = await axios.get("/api/points/",{
+        const res = await axios.get(`${API_URL}/api/points/`,{
             headers: {
                 Authorization: `Bearer ${token}`
               }
@@ -108,13 +110,15 @@ const ItemPurchaseModal = ({id, img, rewardTitle, quantity, cost, usdPrice, vend
          
           console.log(discount)
          try{
-            let res = await axios.put('/api/rewards/purchase', {reward_id, size, cost, discount } , {
+            let res = await axios.put(`${API_URL}/api/rewards/purchase`, {reward_id, size, cost, discount } , {
               headers: {
                 Authorization: `Bearer ${token}`
               },
             });
             setPaid(true)
             setCode(res?.data.code)
+            setOrderNum(res?.data.order_number)
+            console.log(res?.data)
          } catch(e){
             console.log("error ocurred", e)
          }
@@ -227,7 +231,7 @@ const ItemPurchaseModal = ({id, img, rewardTitle, quantity, cost, usdPrice, vend
             </div>
               
      
-            <Button disabled={animatedPoints < 0} onClick={handleSubmit} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:"2em", fontWeight: 600,}}> Pay {totalCostPoints}</Button>
+            <Button disabled={!discount} onClick={handleSubmit} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:"2em", fontWeight: 600,}}> Pay {totalCostPoints}</Button>
             {error && (
               <Typography color="error" sx={{ mt: 1 }}>
                   {error}
@@ -239,7 +243,8 @@ const ItemPurchaseModal = ({id, img, rewardTitle, quantity, cost, usdPrice, vend
               <>
               <div style={{...flexCol, textAlign: "center"}}>
                 <h3>Your Discount Has Been Purchased!</h3>
-                <Coupon 
+                <Coupon
+                  order_number={order_number}
                   discount={discount}
                   first_name={user?.first_name}
                   last_name={user?.last_name}
@@ -266,7 +271,6 @@ const button = {
 }
   const title = {
     margin: 0,
-    fontSize: "clamp(10px, 4vw, 14px)", // auto-adjusts size
     overflow: "hidden",
     textOverflow: "ellipsis",
     wordBreak: "break-word",

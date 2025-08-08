@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import Button from  '@mui/material/Button'
 import TextField from '@mui/material/TextField';
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ActivityForm = () => {
     const [title, setTitle] =  useState("")
@@ -36,7 +37,7 @@ const ActivityForm = () => {
             const formData = new FormData();
             formData.append('image', image);
 
-            const uploadRes = await axios.post('/api/upload', formData, {
+            const uploadRes = await axios.post(`${API_URL}/api/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                   },
@@ -62,7 +63,7 @@ const ActivityForm = () => {
                 points,
                 img: uploadedImageUrl, 
               };
-            const res = await axios.post('/api/activities/create', activityData)
+            const res = await axios.post(`${API_URL}/api/activities/create`, activityData)
             if (!res.ok) throw new Error('Failed to submit activity');
             alert("Activity submitted!");
         } catch(e){

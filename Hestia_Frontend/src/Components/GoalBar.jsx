@@ -5,22 +5,22 @@ import axios from 'axios';
 const GoalBar = () =>{
     const [pointsEarned, setPointsEarned] = useState(0);
 
-    useEffect(() => {
-        const fetchPoints = async () => {
-          try {
-            const res = await axios.get("/api/points/getAll");
-            setPointsEarned(res.data)
-          } catch (error) {
-            console.log("No points received", error);
-          }
-        };
+    // useEffect(() => {
+    //     const fetchPoints = async () => {
+    //       try {
+    //         const res = await axios.get("/api/points/getAll");
+    //         setPointsEarned(res.data)
+    //       } catch (error) {
+    //         console.log("No points received", error);
+    //       }
+    //     };
     
-        fetchPoints();
+    //     fetchPoints();
 
-        const interval = setInterval(fetchPoints, 10000);
+    //     const interval = setInterval(fetchPoints, 10000);
 
-        return () => clearInterval(interval);
-      }, [])
+    //     return () => clearInterval(interval);
+    //   }, [])
 
     const goal =  1000
     let percent = Math.min((pointsEarned / goal) * 100, 100);

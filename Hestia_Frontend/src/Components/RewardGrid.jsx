@@ -3,6 +3,7 @@ import { Grid, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import ItemPurchaseModal from "./ItemPurchaseModal"
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const RewardGrid = ({ id }) => {
 
@@ -11,7 +12,7 @@ const RewardGrid = ({ id }) => {
     useEffect(() => {
         const fetchRewards = async() => {
               try{
-                const res = await axios.get(`/api/rewards/${id}`)
+                const res = await axios.get(`${API_URL}/api/rewards/${id}`)
                 setRewardList(res?.data)
                 console.log(rewardList[0])
             } catch(e) {

@@ -5,6 +5,7 @@ import RewardCard from './RewardCard'
 import { useKeenSlider } from 'keen-slider/react' 
 import { useEffect, useState} from 'react';
 import axios from 'axios'
+const API_URL = import.meta.env.VITE_API_URL;
 
 const RewardCarousel = ({id}) => {
     const [rewardList, setRewardList] = useState([]);
@@ -13,7 +14,7 @@ const RewardCarousel = ({id}) => {
     useEffect(() => {
         const fetchRewards = async() => {
               try{
-                const res = await axios.get(`/api/rewards/${id}`)
+                const res = await axios.get(`${API_URL}/api/rewards/${id}`)
                 setRewardList(res?.data)
                 console.log(rewardList[0])
             } catch(e) {

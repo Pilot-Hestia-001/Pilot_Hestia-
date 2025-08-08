@@ -10,14 +10,19 @@ import Register from './pages/Register';
 import MemberPage from "./pages/MemberPage";
 import ProfilePage from "./pages/Profile";
 import RewardsPage from "./pages/RewardsPage";
-import VendorsListPage from "./pages/VendorsListPage";
-
+import RegisterVendor from "./pages/RegisterVendor"
+import LoginVendor from "./pages/LoginVendor"
+import VendorStorePage from "./pages/VendorSettings";
+import PurchasedRewards from "./pages/PurchasedRewards";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="vendorList" element={<VendorsListPage />}/>
+        <Route path="/vendor/rewards" element={<PurchasedRewards />} />
+        <Route path="/vendor/store" element={<VendorStorePage />}/>
+        <Route path="/vendor/login" element={<LoginVendor />}/>
+        <Route path="/vendor/register" element={<RegisterVendor />}/>
         <Route path="/member" element={<MemberPage />} />
         <Route path="/rewards" element={<RewardsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
@@ -26,7 +31,6 @@ function App() {
         <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
-
   )
 }
 

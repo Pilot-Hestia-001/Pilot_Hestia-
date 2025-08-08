@@ -8,7 +8,6 @@ import RewardForm from "../Components/RewardsForm";
 import Button from '@mui/material/Button';
 
 
-
 const MemberPage = () => {
 
   const {isMember} = useContext(AuthContext)
@@ -38,16 +37,14 @@ const MemberPage = () => {
             </div>
          </div>
 
-
-
          <div style={{display:"flex", flexDirection: "column", alignItems: "center"}}>
 
          <h1>Create</h1>
 
          <div style={{display:"flex", flexDirection: "row", justifyContent: "center", alignItems: "center", gap:"1em"}}>
-         <Button onClick={() => handleSelectedForm("activity")} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:".3em", fontWeight: 600, }}>Activity</Button>
-         <p1>or</p1>
-         <Button onClick={() => handleSelectedForm("reward")} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:".2em", fontWeight: 600, }}>Reward</Button>
+               <Button onClick={() => handleSelectedForm("activity")} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:".3em", fontWeight: 600, }}>Activity</Button>
+               <p1>or</p1>
+               <Button onClick={() => handleSelectedForm("reward")} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:".2em", fontWeight: 600, }}>Reward</Button>
          </div>
 
          </div>
@@ -59,11 +56,6 @@ const MemberPage = () => {
         }
 
       </div>
-
-
-
-
-
       :
       <div>
           <Lock />
@@ -80,7 +72,6 @@ const containerStyle1 = {
    overflowX: "hidden",
    margin: "0 auto",
    display: "flex",
-  //  backgroundImage: "linear-gradient(to bottom, white 0%, white 40%, orange 100%)",
    color: "black",
    flexDirection: 'column',
    alignItems: "center",

@@ -1,5 +1,6 @@
 import { useEffect, useState} from "react";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Points = () => {
 
@@ -10,7 +11,7 @@ const Points = () => {
   useEffect(()=> {
     const getPoints = async() => {
         try{
-             const res = await axios.get(`/api/points/`,{
+             const res = await axios.get(`${API_URL}/api/points/`,{
                 headers: {
                     Authorization: `Bearer ${token}`
                   }

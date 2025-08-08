@@ -10,7 +10,7 @@ import axios from "axios"
 import Button from '@mui/material/Button';
 import "../CSS/VendorCard.css";
 import ActivityCard from "../Components/ActivityCard";
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 const Home = () => {
@@ -19,12 +19,11 @@ const Home = () => {
    const [activities, setActivities] = useState([])
    const {selectedVendorId, setSelectedVendorId, handleVendorClick} = useContext(VendorSelectContext)
 
-
    useEffect(() => {
        const fetchVendors = async () => {
          try {
-           const res = await axios.get("/api/vendor/all");
-
+           const res = await axios.get(`${API_URL}/api/vendor/all`);
+            
             if(res.data) {
               const vendorList = res.data;
               setVendors(vendorList);
@@ -42,7 +41,7 @@ const Home = () => {
      useEffect(() => {
       const fetchActivities = async () => {
         try{
-          const res = await axios.get("/api/activities/retrieve")
+          const res = await axios.get(`${API_URL}/api/activities/retrieve`)
           const activityList = res?.data
           setActivities(activityList)
           console.log(activities)
@@ -54,12 +53,10 @@ const Home = () => {
       fetchActivities();
      }, [])
 
-
    const containerClass =
    "flex-container" + (vendors.length === 3 ? " three-items" : "");
 
-   return(
-      
+   return( 
       <div id="superContainer" style={containerStyle1}>
 
           <HamburgerMenu></HamburgerMenu>
@@ -93,7 +90,7 @@ const Home = () => {
             img={vendor?.img} 
             business_name={vendor?.business_name}
             onClick={() => handleVendorClick(vendor?.id)}
-            isSelected={selectedVendorId === vendor.id}
+            isSelected={selectedVendorId === vendor?.id}
          />
          ))}
         </div>
@@ -125,7 +122,6 @@ const Home = () => {
          ))}
         </div>
       </div>
-
    )
   }
 

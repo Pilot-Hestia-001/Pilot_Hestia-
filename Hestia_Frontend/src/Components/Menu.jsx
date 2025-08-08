@@ -29,7 +29,7 @@ const HamburgerMenu = () => {
     
     const handleLogout = async(link) => {
         try {
-          const res = await axios.post("/api/auth/logout");
+          const res = await axios.post(`${API_URL}/api/auth/logout`);
           if(!res) console.error("couldn't log out")
           logout()
           axios.defaults.headers.common['Authorization'] = '';

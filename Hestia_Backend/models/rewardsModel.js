@@ -19,6 +19,24 @@ class RewardModel {
     return db('rewards').where( {id} ).first()
   }
 
+   static  async updateSize(reward_id, sizeKey, value){
+    // Option 1: If sizes is TEXT or JSON string, fetch → update → save
+    const reward = await db('rewards').where({ id: reward_id }).first();
+    if (!reward) throw new Error('Reward not found');
+
+    let sizes = typeof reward.sizes === 'string' 
+      ? JSON.parse(reward.sizes) 
+      : reward.sizes;
+
+    sizes[sizeKey] = value;
+
+    await db('rewards')
+      .where({ id: reward_id })
+      .update({ sizes: JSON.stringify(sizes) });
+
+    return sizes;
+  }
+
   // Redeem a reward
   static async redeemReward({ user_id, reward_id, cost}) {
 

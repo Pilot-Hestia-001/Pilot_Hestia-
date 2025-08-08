@@ -4,6 +4,7 @@ import VendorSelectContext from "../context/VendorSelectContext";
 import VendorCard from "../Components/VendorCard"
 import RewardGrid from "../Components/RewardGrid";
 import axios from "axios"
+const API_URL = import.meta.env.VITE_API_URL;
 
 const RewardsPage = () => {
    const [vendors, setVendors] = useState([]);
@@ -16,7 +17,7 @@ const RewardsPage = () => {
    useEffect(() => {
        const fetchVendors = async () => {
          try {
-           const res = await axios.get("/api/vendor/all");
+           const res = await axios.get(`${API_URL}/api/vendor/all`);
 
             if(res.data) {
               const vendorList = res.data;
@@ -67,8 +68,6 @@ const RewardsPage = () => {
                   id={selectedVendorId}
                   />
              </div>
-               
-           
            </div>
          </div>
     </>

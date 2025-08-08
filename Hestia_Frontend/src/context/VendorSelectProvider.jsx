@@ -4,8 +4,7 @@ import { useState } from "react";
 const VendorSelectProvider = ({children}) => {
    const [selectedVendorId, setSelectedVendorId] = useState(null);
 
-
-    const handleVendorClick = (id) => {
+   const handleVendorClick = (id) => {
         setSelectedVendorId(id);
     };
 

@@ -8,6 +8,7 @@ import { FormatAlignJustify, Height } from '@mui/icons-material';
 import AuthContext from '../context/AuthContext';
 import { useContext, useState } from 'react';
 
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -34,7 +35,7 @@ export default function BasicModal() {
 }
   const [passcode, setPasscode] = useState("")
   const { memberPasscodeValidationClick } = useContext(AuthContext)
-
+  let role = localStorage.getItem("role")
   const [error, setError] = useState('');
 
     const handleSubmit = async () => {

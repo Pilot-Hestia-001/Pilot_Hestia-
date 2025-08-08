@@ -23,10 +23,13 @@ const loginUser = async(formData) => {
         
     try {
         const data = await handleLogin(formData);
-        localStorage.setItem('token', data.token);
         
+        localStorage.setItem('token', data.token);
+        localStorage.setItem("role", "user")
+
         setEmail("")
         setPassword("")
+
         if(data)navigate("/home")
       } catch (err) {
         console.error('login failed', err);

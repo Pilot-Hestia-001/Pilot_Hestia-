@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
-const Coupon = ({discount, first_name, last_name, reward_id, vendor_id, code} ) => {
+const Coupon = ({order_number, discount, first_name, last_name, reward_id, vendor_id, code} ) => {
 
     const [vendor, setVendor] = useState(null)
     const [reward, setReward] = useState(null)
     const [totalCostPoints, setTotalCostPoints] = useState(null)
     const [totalCostUsd, setTotelCostUsd] = useState(null);
-    console.log("Vendor_id:" + vendor_id)
+
     useEffect(() => {
         const fetchVendor = async () => {
           
           try {
-            const res = await axios.get(`/api/vendor/id/${vendor_id}`);
+            const res = await axios.get(`${API_URL}/api/vendor/id/${vendor_id}`);
             setVendor(res?.data)
           } catch (error) {
             console.log("No vendor found", error);
@@ -20,14 +21,12 @@ const Coupon = ({discount, first_name, last_name, reward_id, vendor_id, code} ) 
         };
         fetchVendor();
     }, [])
-
-    console.log("code:" + code)
     
     useEffect(() => {
         const fetchReward= async () => {
           
           try {
-            const res = await axios.get(`/api/rewards/id/${reward_id}`);
+            const res = await axios.get(`${API_URL}/api/rewards/id/${reward_id}`);
             setReward(res?.data)
             const cost = res?.data.cost;
 
@@ -52,7 +51,8 @@ const Coupon = ({discount, first_name, last_name, reward_id, vendor_id, code} ) 
   return(
     <div style={{...couponContainer, display:"flex", flexDirection:"row"}}>
         <div id="left-side" style={{...flex, width:"50%"}}>
-            <h1>{discount}%</h1>
+            <h1 style={{margin:0}}>#{String(order_number).padStart(3, '0')}</h1>
+            <h2 style={{marginTop:0, fontSize: 30}}>{discount}% Discount</h2>
 
             <div style={{ ...flex, ...flexAlign, padding: 0}}>
                 <h4 style={text}>Embers spent: </h4>
@@ -95,7 +95,7 @@ const Coupon = ({discount, first_name, last_name, reward_id, vendor_id, code} ) 
 
 const couponContainer = {
     width: "90%",
-    border: "3px, dotted, red",
+    border: "3px, solid, red",
     padding: "1em"
 }
 
@@ -107,7 +107,6 @@ const flex = {
 const flexAlign ={
  justifyContent:"flex-start", 
  alignItems:"flex-start",
- 
 }
 
 const text = {

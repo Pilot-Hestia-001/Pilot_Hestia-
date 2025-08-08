@@ -2,12 +2,21 @@ import HamburgerMenu from "../Components/Menu";
 import Coupon from "../Components/Coupon";
 import { useState, useEffect  } from "react"
 import axios from "axios"
+import { Receipt } from "@mui/icons-material";
+import {jwtDecode} from "jwt-decode"
+import socket from "../Utils/socket"
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+
 
 const ProfilePage= () => {
-
+  const [open, setOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const [coupons, setCoupons] = useState(null)
+  const [coupons, setCoupons] = useState([])
+  const [reciept, setReciept] =  useState(null)
   const token = localStorage.getItem("token");
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +30,6 @@ const ProfilePage= () => {
           headers: { Authorization: `Bearer ${token}` }
         });
         setCoupons(couponsRes.data);
-        console.log("coupons", couponsRes.data)
       } catch (e) {
         console.log("Error fetching profile data:", e);
       }
@@ -29,6 +37,64 @@ const ProfilePage= () => {
   
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (!token) return;
+
+    let decoded;
+    try {
+      decoded = jwtDecode(token);
+    } catch (e) {
+      console.error("Invalid token", e);
+      return;
+    }
+
+    const userId = decoded?.id;
+
+    if (!userId) {
+      console.warn("User ID missing in token");
+      return;
+    }
+
+    const handleConnect = () => {
+      console.log("connected")
+      socket.emit("register_user", { userId });
+    };
+    
+    socket.on("connect", handleConnect);
+
+    socket.on("registered_user", ({userId}) =>{
+      console.log(`User ${userId} has joined`)
+    })
+
+    socket.on('join_receipt_room', ({ room }) => {
+      const data = {
+        room: room,
+        role: "user"
+      }
+      console.log(data.room, data.role)
+      socket.emit('request_join_receipt_room', data);
+    });
+
+    socket.on("show_receipt",(reciept) => {
+      setReciept(reciept)
+      console.log(reciept)
+    }) 
+
+    if(reciept) console.log(reciept)
+  }, []);
+
+  useEffect(() => {
+    if (reciept) {
+      console.log("Receipt received:", reciept);
+      setOpen(true);
+    }
+  }, [reciept]);
+
+  const handleClose = () => {
+    setOpen(false);
+    setReciept(null);
+  };
 
   return(<>
    <div style={{...flex, color: "black"}}>
@@ -38,16 +104,51 @@ const ProfilePage= () => {
       <div style={qrContainer}>
         <img style={{width:"100%"}} src={user?.qr_url} alt="" />
       </div>
+
+        <Modal
+          open={!!reciept}
+          onClose={() =>  handleClose}
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              bgcolor: 'background.paper',
+              border: '2px solid #000',
+              boxShadow: 24,
+              p: 4,
+              width: 300
+            }}
+          >
+            <h2 style={{ marginTop: 0 }}>Receipt</h2>
+            <p><strong>Order:</strong> {reciept?.order_number}</p>
+            <p><strong>Customer:</strong> {reciept?.user_name}</p>
+            <p><strong>Vendor Business:</strong> {reciept?.business_name}</p>
+            <p><strong>Vendor Name:</strong> {reciept?.vendor_name}</p>
+            <p><strong>Title:</strong> {reciept?.reward_title}</p>
+            <p><strong>Embers Spent:</strong> {reciept?.spent}</p>
+            <p><strong>Remaining Price</strong> {reciept?.remaining_USD}</p>
+            <button onClick={() => setReciept(null)}>Close</button>
+          </Box>
+        </Modal>
+
       {  
-         coupons ? (
+         coupons?.length > 0 ? (
         <>
         <div style={flex}>
             <h2 style={{textAlign: "center"}}>Purchased Rewards</h2>
 
         <div style={{width:"100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "10px", gap: "10px"}}>
-          {coupons.map((coupon, index) => (
+          {coupons
+          .filter((coupon) => {
+            return coupon?.status === "pending"
+          })
+          .map((coupon, index) => (
           <Coupon
               key={coupon?.id} 
+              order_number={coupon?.order_number}
               discount={coupon?.discount}
               first_name={user?.first_name}
               last_name={user?.last_name}
@@ -58,14 +159,13 @@ const ProfilePage= () => {
           ))}
         </div>
         </div>
-     
-
       </>
-
       ) : (
-    <>
-    <h3></h3>
-    </>
+        <div style={{color: "black"}}>
+        <center>
+          <h3>No Coupons Have Been Purchased Yet</h3>
+        </center>
+        </div>
       )}
       
 

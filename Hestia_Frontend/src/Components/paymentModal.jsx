@@ -7,6 +7,7 @@ import Modal from '@mui/material/Modal';
 import ActivityGrid from "./ActivityGrid"
 import { useContext, useState, useEffect} from 'react';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const style = {
   position: 'absolute',
@@ -37,7 +38,7 @@ const PayemntModal = ({user, handleUserRefresh}) => {
   useEffect(() => {
     const fetchActivities = async () => {
       try{
-        const res = await axios.get("/api/activities/retrieve")
+        const res = await axios.get(`${API_URL}/api/activities/retrieve`)
         const activityList = res?.data
         setActivities(activityList)
        
@@ -60,8 +61,7 @@ const PayemntModal = ({user, handleUserRefresh}) => {
          }
         
          try{
-            const res = axios.post("/api/activities/complete", data )
-            
+            const res = axios.post(`${API_URL}/api/activities/complete`, data )
             handleUserRefresh()
             handleClose()
          } catch(e){
@@ -94,7 +94,7 @@ const PayemntModal = ({user, handleUserRefresh}) => {
                 onCardClick={handleCardClick}
                 isSelected={selectedActivity?.id}
             />
-  
+
             <Button onClick={handleSubmit} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:"12px", fontWeight: 600,}}> Pay {selectedActivity?.points}</Button>
             {error && (
               <Typography color="error" sx={{ mt: 1 }}>
