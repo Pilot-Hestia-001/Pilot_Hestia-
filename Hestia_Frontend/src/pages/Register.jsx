@@ -8,8 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { BorderColor } from '@mui/icons-material';
 
 
-const Register = () => {
 
+const Register = () => {
+    
     const navigate = useNavigate();
    
     const [first_name, setFirst_name] =  useState("")

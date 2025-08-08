@@ -7,6 +7,7 @@ import {jwtDecode} from "jwt-decode"
 import socket from "../Utils/socket"
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 const ProfilePage= () => {
@@ -21,12 +22,12 @@ const ProfilePage= () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userRes = await axios.get("/api/user/me", {
+        const userRes = await axios.get(`${API_URL}/api/user/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUser(userRes.data);
   
-        const couponsRes = await axios.get("/api/rewards/coupon", {
+        const couponsRes = await axios.get(`${API_URL}/api/rewards/coupon`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setCoupons(couponsRes.data);
