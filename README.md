@@ -138,4 +138,7 @@ You can build this app with:
 For questions or collaboration:
 - Email: elijah@projecthestia.org
 - LinkedIn: linkedin.com/in/elijah-hawes-a3973b219
+  
+This Website/Application is owned by Project HESTIA© 2025
+
 
