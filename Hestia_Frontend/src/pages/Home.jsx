@@ -129,7 +129,6 @@ const Home = () => {
      position: "relative",
      width: "100%",
      overflowX: "hidden",
-     margin: "0 auto",
      display: "flex",
     //  backgroundImage: "linear-gradient(to bottom, white 0%, white 40%, orange 100%)",
      color: "black",
