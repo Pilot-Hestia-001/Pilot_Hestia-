@@ -6,7 +6,7 @@ export default defineConfig({
   base: './', 
   server: {
     proxy: {
-      '/api': 'http://localhost:8080'
+      '/api': 'https://pilot-hestia-backend.onrender.com'
     }
   },
 
