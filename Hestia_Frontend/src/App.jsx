@@ -18,7 +18,7 @@ import PurchasedRewards from "./pages/PurchasedRewards";
 function App() {
   return (
     <Router>
-      <Routes>
+      <Routes basename={process.env.PUBLIC_URL}>
         <Route path="/vendor/rewards" element={<PurchasedRewards />} />
         <Route path="/vendor/store" element={<VendorStorePage />}/>
         <Route path="/vendor/login" element={<LoginVendor />}/>

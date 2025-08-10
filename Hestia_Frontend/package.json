@@ -1,8 +1,9 @@
 {
-  "name": "hestia-backend",
+  "name": "hestia-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": ".",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
