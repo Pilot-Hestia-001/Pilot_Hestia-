@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
 const multer = require('multer');
 const { v2: cloudinary } = require('cloudinary');
 const streamifier = require('streamifier');
@@ -18,7 +19,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: 'https://pilot-hestia-frontend.onrender.com', // Adjust as needed
+    origin: ['https://pilot-hestia-frontend.onrender.com', "http://localhost:8080"], // Adjust as needed
     methods: ['GET', 'POST']
   }
 });
@@ -113,7 +114,7 @@ io.on('connection', (socket) => {
 
 app.use(express.json()); 
 app.use(cors({
-    origin: 'https://pilot-hestia-frontend.onrender.com',
+    origin: ['https://pilot-hestia-frontend.onrender.com', "http://localhost:8080"],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   }));
@@ -199,6 +200,13 @@ app.use('/api/user', userRoutes);
 const vendorRoutes = require('./routes/vendorRoutes');
 const { join } = require('path');
 app.use('/api/vendor', vendorRoutes);
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Handle React Router client-side routing (send index.html for all other routes)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 server.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
