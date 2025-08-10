@@ -202,9 +202,7 @@ const { join } = require('path');
 app.use('/api/vendor', vendorRoutes);
 
 app.use(express.static(path.join(__dirname, 'build')));
-
-// Handle React Router client-side routing (send index.html for all other routes)
-app.get('/.*/', (req, res) => {
+app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
