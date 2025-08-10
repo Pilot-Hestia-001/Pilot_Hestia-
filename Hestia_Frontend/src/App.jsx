@@ -1,22 +1,17 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import MemberPage from "./pages/MemberPage";
 import ProfilePage from "./pages/Profile";
 import VendorsListPage from "./pages/VendorsListPage";
-
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="VendorsListPage" element={<VendorsListPage />}/>
+        <Route path="VendorsListPage" element={<VendorsListPage />} />
         <Route path="/MemberPage" element={<MemberPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/" element={<Home />} />
@@ -24,8 +19,7 @@ function App() {
         <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
-
-  )
+  );
 }
 
-export default App
+export default App;

@@ -2,25 +2,23 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
-    return knex.schema.createTable('users', table => {
-        table.increments('id').primary();
-        table.string('first_name');
-        table.string('last_name');
-        table.string('email').unique().notNullable();
-        table.string('password').notNullable();
-        table.string('qr_code').unique();
-        table.text('qr_url');
-        table.timestamps(true, true);
-        table.string('reset_token');
-        table.timestamp('reset_token_expires');
-      });
+exports.up = function (knex) {
+  return knex.schema.createTable("users", (table) => {
+    table.increments("id").primary();
+    table.string("first_name");
+    table.string("last_name");
+    table.string("email").unique().notNullable();
+    table.string("password").notNullable();
+    table.timestamps(true, true);
+    table.string("reset_token");
+    table.timestamp("reset_token_expires");
+  });
 };
 
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function(knex) {
-    return knex.schema.dropTable('users');
+exports.down = function (knex) {
+  return knex.schema.dropTable("users");
 };
