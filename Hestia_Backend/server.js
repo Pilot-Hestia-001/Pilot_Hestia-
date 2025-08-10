@@ -201,9 +201,9 @@ const vendorRoutes = require('./routes/vendorRoutes');
 const { join } = require('path');
 app.use('/api/vendor', vendorRoutes);
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'dist')));
 app.get(/^\/(?!api).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 server.listen(PORT, () => {
