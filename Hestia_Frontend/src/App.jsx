@@ -18,7 +18,6 @@ import { BrowserRouter } from 'react-router-dom';
 function App() {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL || ''}>
-    <Router>
       <Routes>
         <Route path="/vendor/rewards" element={<PurchasedRewards />} />
         <Route path="/vendor/store" element={<VendorStorePage />}/>
@@ -31,7 +30,6 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
-    </Router>
     </BrowserRouter>
   )
 }
