@@ -7,8 +7,13 @@ import VendorSelectProvider from './context/VendorSelectProvider'
 import PasscodeProvider from './context/PasscodeProvider.jsx';
 import { BrowserRouter } from 'react-router-dom';
 
+const basename =
+  import.meta.env?.BASE_URL ||  // works for Vite
+  process.env?.PUBLIC_URL ||    // works for CRA
+  "/"; 
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter basename={process.env.PUBLIC_URL || ''}>
+  <BrowserRouter basename={basename}>
     <AuthProvider> 
     <React.StrictMode>
       <PasscodeProvider>
