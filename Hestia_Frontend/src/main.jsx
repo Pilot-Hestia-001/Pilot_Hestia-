@@ -5,6 +5,7 @@ import './index.css'
 import { AuthProvider } from './context/AuthProvider';
 import VendorSelectProvider from './context/VendorSelectProvider'
 import PasscodeProvider from './context/PasscodeProvider.jsx';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter basename={process.env.PUBLIC_URL || ''}>
