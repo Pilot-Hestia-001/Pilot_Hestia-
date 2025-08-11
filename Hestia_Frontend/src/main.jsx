@@ -7,13 +7,15 @@ import VendorSelectProvider from './context/VendorSelectProvider'
 import PasscodeProvider from './context/PasscodeProvider.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <AuthProvider> 
-  <React.StrictMode>
-    <PasscodeProvider>
-    <VendorSelectProvider>
-    <App />
-   </VendorSelectProvider>
-   </PasscodeProvider>
-  </React.StrictMode>
-  </AuthProvider>
+  <BrowserRouter basename={process.env.PUBLIC_URL || ''}>
+    <AuthProvider> 
+    <React.StrictMode>
+      <PasscodeProvider>
+      <VendorSelectProvider>
+      <App />
+    </VendorSelectProvider>
+    </PasscodeProvider>
+    </React.StrictMode>
+    </AuthProvider>
+  </BrowserRouter>
 )
