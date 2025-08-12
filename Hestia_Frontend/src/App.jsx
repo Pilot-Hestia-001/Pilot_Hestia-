@@ -19,20 +19,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 
 function App() {
-  // const location = useLocation();
-  // const navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   localStorage.setItem("lastPath", location.pathname + location.search);
-  // }, [location]);
+  useEffect(() => {
+    localStorage.setItem("lastPath", location.pathname + location.search);
+  }, [location]);
 
-  // // On first load, check if we have a lastPath
-  // useEffect(() => {
-  //   const lastPath = localStorage.getItem("lastPath");
-  //   if (lastPath && lastPath !== location.pathname) {
-  //     navigate(lastPath, { replace: true });
-  //   }
-  // }, []); // only run once
+  // On first load, check if we have a lastPath
+  useEffect(() => {
+    const lastPath = localStorage.getItem("lastPath");
+    if (lastPath && lastPath !== location.pathname) {
+      navigate(lastPath, { replace: true });
+    }
+  }, []); // only run once
 
   return (
       <Routes>
