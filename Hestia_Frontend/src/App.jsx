@@ -14,14 +14,28 @@ import RegisterVendor from "./pages/RegisterVendor"
 import LoginVendor from "./pages/LoginVendor"
 import VendorStorePage from "./pages/VendorSettings";
 import PurchasedRewards from "./pages/PurchasedRewards";
-import { Navigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function RedirectToCurrent() {
-  const location = useLocation();
-  return <Navigate to={location.pathname} replace />;
-}
 
 function App() {
+
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem("lastPath", location.pathname + location.search);
+  }, [location]);
+
+  // On first load, check if we have a lastPath
+  useEffect(() => {
+    const lastPath = localStorage.getItem("lastPath");
+    if (lastPath && lastPath !== location.pathname) {
+      navigate(lastPath, { replace: true });
+    }
+  }, []); // only run once
+
   return (
       <Routes>
         <Route path="/index.html" element={<RedirectToCurrent />} />
