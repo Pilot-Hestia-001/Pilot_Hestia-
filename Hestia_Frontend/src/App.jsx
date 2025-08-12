@@ -14,11 +14,17 @@ import RegisterVendor from "./pages/RegisterVendor"
 import LoginVendor from "./pages/LoginVendor"
 import VendorStorePage from "./pages/VendorSettings";
 import PurchasedRewards from "./pages/PurchasedRewards";
-import { BrowserRouter } from 'react-router-dom';
+import { Navigate, useLocation } from "react-router-dom";
+
+function RedirectToCurrent() {
+  const location = useLocation();
+  return <Navigate to={location.pathname} replace />;
+}
+
 function App() {
   return (
-   
       <Routes>
+        <Route path="/index.html" element={<RedirectToCurrent />} />
         <Route path="/vendor/rewards" element={<PurchasedRewards />} />
         <Route path="/vendor/store" element={<VendorStorePage />}/>
         <Route path="/vendor/login" element={<LoginVendor />}/>
@@ -30,7 +36,6 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
-   
   )
 }
 
