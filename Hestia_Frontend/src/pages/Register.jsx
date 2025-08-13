@@ -38,7 +38,7 @@ const Register = () => {
             setFirst_name("")
             setLast_name("")
             console.log("data: "+ data)
-            if(data)navigate("/home")
+            if(data)navigate("/")
           } catch (err) {
             console.error('Registration failed', err);
             setError(err.response?.data?.message);
@@ -105,7 +105,7 @@ return(
                 <Button 
                     size="small"
                     sx={{color:"#ff2400"}}
-                    onClick={() => navigate("/")}>
+                    onClick={() => navigate("/login")}>
                     Log in
                 </Button>
               

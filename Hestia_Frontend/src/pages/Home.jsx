@@ -10,6 +10,7 @@ import axios from "axios"
 import Button from '@mui/material/Button';
 import "../CSS/VendorCard.css";
 import ActivityCard from "../Components/ActivityCard";
+import NonUserMenu from "../Components/NonUserMenu"
 const API_URL = import.meta.env.VITE_API_URL;
 
 
@@ -18,8 +19,13 @@ const Home = () => {
    const [vendors, setVendors] = useState([]);
    const [activities, setActivities] = useState([])
    const {selectedVendorId, setSelectedVendorId, handleVendorClick} = useContext(VendorSelectContext)
+   const [logged, setLogged] = useState(localStorage.getItem("loggedIn"))
+   
 
    useEffect(() => {
+       
+       if(logged){
+
        const fetchVendors = async () => {
          try {
            const res = await axios.get(`${API_URL}/api/vendor/all`);
@@ -34,11 +40,15 @@ const Home = () => {
            console.log("No vendors received", error);
          }
        };
-   
-       fetchVendors();
+
+        fetchVendors();
+      }
+       
      }, [])
 
      useEffect(() => {
+
+      if(logged){
       const fetchActivities = async () => {
         try{
           const res = await axios.get(`${API_URL}/api/activities/retrieve`)
@@ -51,6 +61,7 @@ const Home = () => {
       }
 
       fetchActivities();
+      }
      }, [])
 
    const containerClass =
@@ -59,15 +70,32 @@ const Home = () => {
    return( 
       <div id="superContainer" style={containerStyle1}>
 
-          <HamburgerMenu></HamburgerMenu>
+          { logged ?
+             <HamburgerMenu></HamburgerMenu>
+            :
+            <NonUserMenu></NonUserMenu>
+            }
+
         
           <div style={containerStyle2}>
                
             <div style={heroContentStyle}>
                <h2 style={headerStyle}>Earn Points. Get Rewards. Power Your Community.</h2>
                <h5 style={subHeaderStyle}>Join activities, scan QR codes, and redeem discounts at local vendors.</h5>
-               <Button onClick={() => navigate('/profile')} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:"10px", fontWeight: 600, }}>Profile</Button>
-               <h5 style={subHeaderStyle} >Check out your profile!</h5>
+
+          { logged ?
+              <>
+                
+                <Button onClick={() => navigate('/profile')} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:"10px", fontWeight: 600, }}>Profile</Button>
+                <h5 style={subHeaderStyle} >Check out your profile!</h5>
+              </>
+            :
+              <>
+                 <Button onClick={() => navigate('/register')} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:"10px", fontWeight: 600, }}>Register</Button>
+                 <h5 style={subHeaderStyle} >Register Your Account!</h5>
+              </>
+            }
+              
             </div>
 
             

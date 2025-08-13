@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField';
 import Button from  '@mui/material/Button'
-import { useState } from "react"
+import { useState, useContext } from "react"
 import handleLogin from '../Utils/handleLogin';
 import { useNavigate } from 'react-router-dom';
-import HamburgerMenu from "../Components/Menu";
+import AuthContext from '../context/AuthContext';
 
 const Login = () => {
 const navigate = useNavigate();
@@ -12,6 +12,7 @@ const navigate = useNavigate();
 const [email, setEmail] =  useState([])
 const [password, setPassword] =  useState([])
 const [error, setError] = useState([])
+const { login } = useContext(AuthContext)
 
 const formData = {
     "email" : email,
@@ -23,14 +24,12 @@ const loginUser = async(formData) => {
         
     try {
         const data = await handleLogin(formData);
-        
-        localStorage.setItem('token', data.token);
         localStorage.setItem("role", "user")
 
         setEmail("")
         setPassword("")
-
-        if(data)navigate("/home")
+        login(data?.token)
+        if(data)navigate("/")
       } catch (err) {
         console.error('login failed', err);
         setError(err.message || 'Log in failed');

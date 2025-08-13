@@ -20,19 +20,33 @@ export const AuthProvider = ({ children }) => {
   });
 
   // Load user from token on page load
+  const login = (token) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('loggedIn', 'true');
+  
+    try {
+      const decoded = jwtDecode(token);
+      setUser(decoded);
+    } catch (err) {
+      console.error('Invalid token:', err);
+      localStorage.removeItem('token');
+      localStorage.removeItem('loggedIn');
+      setUser(null);
+    }
+  }
+  
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
       try {
-        const decoded = jwtDecode(token);
-        setUser(decoded)
+        const token = localStorage.getItem('token');
+        if (token) {
+          login(token);
+        }
       } catch (err) {
         console.error('Invalid token:', err);
         localStorage.removeItem('token');
         setUser(null);
       }
-    }
   }, []);
 
   const memberPasscodeValidationClick = async (passcode) => {
@@ -61,18 +75,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = (token) => {
-    localStorage.setItem('token', token);
-    const decoded = jwtDecode(token);
-    setUser(decoded);
-  };
-
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('isMember');
     localStorage.removeItem('isAdmin');
     localStorage.removeItem('userRole');
     localStorage.removeItem("role")
+    localStorage.removeItem('loggedIn');
 
     setIsMember(false);
     setIsAdmin(false);

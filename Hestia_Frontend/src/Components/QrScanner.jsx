@@ -82,7 +82,7 @@ const QrScanner = () => {
                 handleScan(result);
               }
             }}
-            constraints={{ facingMode: 'environment' }}
+            constraints={{ video: { facingMode: 'environment' }}}
           />
         ) : (
           <Typography variant="body1" sx={{ color: 'white', textAlign: 'center', px: 2 }}>

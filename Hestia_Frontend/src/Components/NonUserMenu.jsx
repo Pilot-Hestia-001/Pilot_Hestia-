@@ -12,11 +12,9 @@ import Points from "../Components/points"
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-const API_URL = import.meta.env.VITE_API_URL;
 
 
-const HamburgerMenu = () => {
-    const { logout } = useContext(AuthContext)
+const NonUserMenu = () => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -27,18 +25,6 @@ const HamburgerMenu = () => {
       setAnchorEl(null);
       navigate(link);
     };
-    
-    const handleLogout = async(link) => {
-        try {
-          const res = await axios.post(`${API_URL}/api/auth/logout`);
-          if(!res) console.error("couldn't log out")
-          logout()
-          axios.defaults.headers.common['Authorization'] = '';
-          navigate(link);
-        } catch(error){
-          console.log(error)
-        }
-    }
   
     return (
       <div id="nav" style={stickyBarStyle}>
@@ -63,16 +49,11 @@ const HamburgerMenu = () => {
               },
             }}
           >
-          <MenuItem onClick={() => handleClose("/profile")}> <PersonOutlineOutlinedIcon fontSize='small'/>&ensp;Profile</MenuItem>
-          <MenuItem onClick={() => handleClose("/")}><HomeOutlinedIcon fontSize='small'/>&ensp;Home</MenuItem>
-          <MenuItem onClick={() => handleClose("/rewards")}> <HotelClassOutlinedIcon fontSize='small'/>&ensp;Rewards</MenuItem>
-          <MenuItem onClick={() => handleClose("/member")}> <HandshakeOutlinedIcon fontSize='small'/>&ensp;Member</MenuItem>
-          <MenuItem onClick={() => handleLogout("/login")} style={{"color" : "red"}}>Logout</MenuItem>
+
+          <MenuItem onClick={() => handleClose("/register")}>Register</MenuItem>
+          <MenuItem onClick={() => handleClose("/login")}>Log In</MenuItem>
           </Menu>
         </div>
-          <div>
-          <Points></Points>
-          </div>
         
       </div>
     );
@@ -92,4 +73,4 @@ const stickyBarStyle = {
   paddingRight: "25px",
 };
 
-export default HamburgerMenu;
+export default NonUserMenu;
