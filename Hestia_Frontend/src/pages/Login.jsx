@@ -5,10 +5,18 @@ import { useState, useContext } from "react"
 import handleLogin from '../Utils/handleLogin';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 
 const Login = () => {
 const navigate = useNavigate();
-
+const [emailError, setEmailError] = useState(false);
+const [emailErrorMessage, setEmailErrorMessage] = useState('');
+const [passwordError, setPasswordError] = useState(false);
+const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+const [showPassword, setShowPassword] = useState(false);
 const [email, setEmail] =  useState([])
 const [password, setPassword] =  useState([])
 const [error, setError] = useState([])
@@ -21,8 +29,10 @@ const formData = {
 
 const loginUser = async(formData) => {
     setError('');
-        
-    try {
+   const valid = validateInputs()
+
+   if(valid){  
+     try {
         const data = await handleLogin(formData);
         localStorage.setItem("role", "user")
 
@@ -30,11 +40,35 @@ const loginUser = async(formData) => {
         setPassword("")
         login(data?.token)
         if(data)navigate("/")
-      } catch (err) {
+    } catch (err) {
         console.error('login failed', err);
-        setError(err.message || 'Log in failed');
-      }
+        setError('Incorrect email or password');
+    }}
 }
+
+const validateInputs = () => {
+    let isValid = true;
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      setEmailError(true);
+      setEmailErrorMessage('Please enter a valid email address.');
+      isValid = false;
+    } else {
+      setEmailError(false);
+      setEmailErrorMessage('');
+    }
+
+    if (!password || password.length < 6) {
+      setPasswordError(true);
+      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      isValid = false;
+    } else {
+      setPasswordError(false);
+      setPasswordErrorMessage('');
+    }
+
+    return isValid;
+  };
 
     return(
         <div style={containerStyle1}>
@@ -54,21 +88,38 @@ const loginUser = async(formData) => {
             <div style={containerStyle2}>
                 <Box component="section" sx={{ p: 2, border: 1, borderRadius: 2  }} style={box}>
                     <TextField 
-                        id="outlined-basic" 
-                        label="Email" 
+                        id="outlined-basic"
+                        error={emailError}
+                        helperText={emailErrorMessage} 
+                        label="your@email.com" 
                         variant="outlined" 
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value.toLowerCase())}
                         value={email}
+                        color={emailError ? 'error' : 'primary'}
                     />
                 <br/>
                     <TextField
                         id="outlined-password-input"
+                        error={passwordError}
+                        helperText={passwordErrorMessage}
                         label="Password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         autoComplete="current-password"
                         onChange={(e) => setPassword(e.target.value)}
                         value={password}
-                    />
+                        color={passwordError ? 'error' : 'primary'}
+                        slotProps={{
+                            input: {
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton onClick={() => setShowPassword(!showPassword)}>
+                                      {showPassword ? <VisibilityOffIcon/> : <VisibilityIcon />}
+                                    </IconButton>
+                                  </InputAdornment>
+                                )
+                             }
+                      }}
+                />
                  <br/>
                     <Button 
                         variant="contained"

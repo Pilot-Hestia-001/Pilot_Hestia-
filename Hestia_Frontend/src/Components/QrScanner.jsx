@@ -14,7 +14,7 @@ const QrScanner = () => {
   const hasScanned = useRef(false);
   
 
-  const handleScan = async(result) => {
+const handleScan = async(result) => {
    
     if (!result || hasScanned.current) return;
 
@@ -82,7 +82,7 @@ const QrScanner = () => {
                 handleScan(result);
               }
             }}
-            constraints={{ video: { facingMode: 'environment' }}}
+            constraints={{video: { facingMode: 'environment' }}}
           />
         ) : (
           <Typography variant="body1" sx={{ color: 'white', textAlign: 'center', px: 2 }}>
