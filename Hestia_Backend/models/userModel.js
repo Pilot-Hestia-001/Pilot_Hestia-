@@ -15,6 +15,8 @@ class UserModel {
       .returning('*');
     }
 
+    
+
   static async findByEmail(email) {
     const user = await db('users').where({ email }).first();
     return user;

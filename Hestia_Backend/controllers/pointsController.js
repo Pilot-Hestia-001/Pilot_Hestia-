@@ -1,5 +1,5 @@
 const Points = require('../models/pointsModel');
-
+const LedgerModel = require("../models/ledgerModel")
 // Get user's current point record
 const getUserPoints = async (req, res) => {
   try {
@@ -14,7 +14,19 @@ const getUserPoints = async (req, res) => {
 
 const getAllpoints = async (req, res) => {
   try{
-    const points = await Points.getAllpoints(req.user);
+    const points = await LedgerModel.getTotalEarned();
+    if (points === null) return res.status(404).json({ message: 'Points record not found' });
+   
+    res.json(Number(points));
+  } catch(err) {
+    console.error('Error getting points:', err);
+    res.status(500).json({ message: 'Server error retrieving points' })
+  }
+}
+
+const getAllCurrentPoints = async (req, res) => {
+  try{
+    const points = await Points.getAllpoints();
     if (points === null) return res.status(404).json({ message: 'Points record not found' });
     res.json(points);
   } catch(err) {

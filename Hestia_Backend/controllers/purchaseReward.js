@@ -3,7 +3,7 @@ const RewardCodeModel = require('../models/RewardCodeModel')
 const RedemptionModel =  require("../models/RedemptionModel")
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db');
-const io  = require('../server');
+const io = require('../server');
 
 const purchaseReward = async (req, res) => {
   const user_id = req.user;
@@ -56,7 +56,8 @@ const purchaseReward = async (req, res) => {
       .orderBy('rr.created_at', 'desc') // Or 'rr.id' if you don't have created_at
       .first();
       res.status(201).json({ message: 'Reward purchased', code: coupon.code, order_number: coupons.order_number});
-    io.to(`vendor_${reward.vendor_id}`).emit("new_coupon", coupons);
+      
+      io.to(`vendor_${reward.vendor_id}`).emit("new_coupon", coupons);
     
   } catch (err) {
     console.error('Error purchasing reward:', err);

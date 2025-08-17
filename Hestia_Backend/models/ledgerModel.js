@@ -16,9 +16,9 @@ class LedgerModel {
     return await db('ledger').where({ vendor_id }).orderBy('created_at', 'desc');
   }
 
-  static async getTotalEarned(user_id) {
+  static async getTotalEarned() {
     const result = await db('ledger')
-      .where({ user_id, type: 'earn' })
+      .where({type: 'earn' })
       .sum('amount as total');
     return result[0].total || 0;
   }

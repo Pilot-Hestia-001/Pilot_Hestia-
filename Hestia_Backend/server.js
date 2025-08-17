@@ -19,12 +19,17 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ['https://pilot-hestia-frontend.onrender.com', "http://localhost:8080"], // Adjust as needed
+    origin: ['https://pilot-hestia-frontend.onrender.com', "http://localhost:5173"], // Adjust as needed
     methods: ['GET', 'POST']
   }
 });
 
 module.exports = io;
+
+// const { initSocket } = require('./socketHelper');
+// initSocket(io);
+
+
 
 const jwt = require('jsonwebtoken');
 
@@ -43,6 +48,8 @@ io.use((socket, next) => {
   }
 });
 
+let raffleParticipants = [];
+
 io.on('connection', (socket) => {
   console.log("Socket connected:", socket.id);
 
@@ -53,22 +60,25 @@ io.on('connection', (socket) => {
   });
 
   socket.on('register_vendor', ({ vendorId }) => {
+    console.log("registered")
     connectedVendors.set(vendorId, socket.id);
     socket.emit("registered_vendor", {vendorId})
   });
 
-  socket.on("join_vendor_room", ({ vendorId }) => {
-    const registeredVendorSocketId = connectedVendors.get(vendorId);
+  socket.on("join_goal_room", ({ userId }) => {
+    const registeredUserSocketId = connectedUsers.get(userId);
     
-    if (registeredVendorSocketId !== socket.id) {
-      console.warn(`Unauthorized vendor join attempt for vendor ${vendorId}`);
+    if (registeredUserSocketId !== socket.id) {
+      console.warn(`Unauthorized user join attempt for user ${userId}`);
       return;
     }
 
-      const roomName = `vendor_${vendorId}`;
+      const roomName = `goal_room`;
       socket.join(roomName);
-      console.log(`Vendor ${vendorId} joined room ${roomName}`);
-      socket.emit("joined_vendor_room", { roomName });
+      console.log(`User ${userId} joined room ${roomName}`);
+
+
+      socket.emit("joined_goal_room", { roomName });
     });
 
     socket.on("leave_vendor_room", ({ vendorId }) => {
@@ -77,28 +87,71 @@ io.on('connection', (socket) => {
       console.log(`Vendor ${vendorId} left room ${roomName}`);
     });
 
-    socket.on('request_join_receipt_room', (data) => {
-      socket.join(data?.room);
-      console.log(`${data?.role} joined room: ${data?.room}`);
-  
-      if (!joinedReceiptRooms.has(data?.room)) {
-        joinedReceiptRooms.set(data?.room, new Set());
+    socket.on('request_join_receipt_room', ({ room, role }) => {
+      if (!room || !role) return;
+    
+      socket.join(room);
+      console.log(`${role} joined room: ${room}`);
+    
+      if (!joinedReceiptRooms.has(room)) {
+        joinedReceiptRooms.set(room, new Set());
       }
     
-      joinedReceiptRooms.get(data?.room).add(data?.role);
-      socket.join(data?.room);
+      const participants = joinedReceiptRooms.get(room);
+      participants.add(role);
     
-      console.log(`${data?.role} joined ${data?.room}`);
-    
-      setTimeout(() => {
-        const roomSet = joinedReceiptRooms.get(data?.room);
-        if (roomSet && roomSet.has('user') && roomSet.has('vendor')) {
-          console.log(`Both parties joined ${data?.room}. Emitting show_receipt`);
-          console.log(pendingReceipts.get(data?.room))
-          io.to(data?.room).emit('show_receipt', pendingReceipts.get(data?.room));
+      if (participants.size === 2 && participants.has('user') && participants.has('vendor')) {
+        console.log(`Both user and vendor are now in ${room}. Sending receipt...`);
+        io.to(room).emit('show_receipt', pendingReceipts.get(room));
+
+        const socketsInRoom = io.sockets.adapter.rooms.get(room);
+        if (socketsInRoom) {
+          for (const socketId of socketsInRoom) {
+            const s = io.sockets.sockets.get(socketId);
+            if (s){
+              s.leave(room);
+              console.log("both parties have left the room")
+          }
         }
-      }, 500);
-    })
+      
+        // Optionally, clean up your map
+        joinedReceiptRooms.delete(room);
+        pendingReceipts.delete(room);
+      }
+    }
+    });
+
+    socket.on("join_raffle_room", ({ user_id, name, role }) => {
+      socket.join("raffle_room");
+
+      if (!raffleParticipants.some(p => p.user_id === user_id) && role !== "admin") {
+        raffleParticipants.push({ user_id, name });
+      }
+   
+      io.to("raffle_room").emit("raffle_participants", {raffleParticipants});
+      console.log("user " + user_id + " joined raffle room" )
+    });
+  
+    socket.on("start_raffle", () => {
+      if (raffleParticipants.length === 0) return;
+  
+      const winnerIdx = Math.floor(Math.random() * raffleParticipants.length);
+      const winner = raffleParticipants[winnerIdx].name
+      console.log(winnerIdx)
+      // Tell everyone who won
+      io.to("raffle_room").emit("raffle_winner", {winner, winnerIdx});
+    });
+
+    socket.on("leave_raffle_room", ({ user_id }) => {
+      const roomName = "raffle_room";
+      socket.leave(roomName);
+
+      raffleParticipants = raffleParticipants.filter(p => p.user_id !== user_id);
+
+      // Broadcast updated list
+      io.to(roomName).emit("raffle_participants", { raffleParticipants });
+      console.log(`User ${user_id} left ${roomName}`);
+    });
 
   socket.on('disconnect', () => {
     // Remove disconnected sockets from the maps
@@ -114,7 +167,7 @@ io.on('connection', (socket) => {
 
 app.use(express.json()); 
 app.use(cors({
-    origin: ['https://pilot-hestia-frontend.onrender.com', "http://localhost:8080"],
+    origin: ['https://pilot-hestia-frontend.onrender.com', "http://localhost:5173"],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   }));
@@ -209,3 +262,6 @@ app.get(/^\/(?!api).*/, (req, res) => {
 server.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
+
+
+

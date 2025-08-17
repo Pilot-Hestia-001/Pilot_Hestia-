@@ -1,7 +1,7 @@
 const RedemptionModel = require('../models/RedemptionModel');
 const RewardCodeModel = require('../models/RewardCodeModel');
-const io = require('../server');
 const { connectedUsers, connectedVendors, pendingReceipts } = require('../connections');
+const io = require('../server');
 const db = require('../db');
 
 const redeemCode = async (req, res) => {
