@@ -35,15 +35,14 @@ const PurchasedRewards = () => {
       }
 
       const handleConnect = () => {
-        console.log("connected")
         socket.emit("register_vendor", { vendorId });
       };
       
       socket.on("connect", handleConnect);
 
       socket.on("registered_vendor", ({vendorId}) =>{
-  
-        socket.emit("join_vendor_room", { vendorId });
+      console.log("connected", vendorId)
+      
       })
 
       socket.on("new_coupon", (coupon) => {

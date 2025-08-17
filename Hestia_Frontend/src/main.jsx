@@ -4,7 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { AuthProvider } from './context/AuthProvider';
 import VendorSelectProvider from './context/VendorSelectProvider'
-import PasscodeProvider from './context/PasscodeProvider.jsx';
+import TotalPointsProvider from './context/TotalPointsProvider.jsx';
 import { BrowserRouter } from 'react-router-dom';
 
 const basename =
@@ -16,11 +16,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter basename={basename}>
     <AuthProvider> 
     <React.StrictMode>
-      <PasscodeProvider>
+      <TotalPointsProvider>
       <VendorSelectProvider>
       <App />
     </VendorSelectProvider>
-    </PasscodeProvider>
+    </TotalPointsProvider>
     </React.StrictMode>
     </AuthProvider>
   </BrowserRouter>

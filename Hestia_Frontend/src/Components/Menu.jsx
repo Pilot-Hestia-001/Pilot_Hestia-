@@ -7,6 +7,7 @@ import HotelClassOutlinedIcon from '@mui/icons-material/HotelClassOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import axios from 'axios';
 import Points from "../Components/points"
 import { useContext } from 'react';
@@ -67,6 +68,7 @@ const HamburgerMenu = () => {
           <MenuItem onClick={() => handleClose("/")}><HomeOutlinedIcon fontSize='small'/>&ensp;Home</MenuItem>
           <MenuItem onClick={() => handleClose("/rewards")}> <HotelClassOutlinedIcon fontSize='small'/>&ensp;Rewards</MenuItem>
           <MenuItem onClick={() => handleClose("/member")}> <HandshakeOutlinedIcon fontSize='small'/>&ensp;Member</MenuItem>
+          <MenuItem onClick={() => handleClose("/admin")}> <AdminPanelSettingsOutlinedIcon fontSize='small'/>&ensp;Admin</MenuItem>
           <MenuItem onClick={() => handleLogout("/login")} style={{"color" : "red"}}>Logout</MenuItem>
           </Menu>
         </div>

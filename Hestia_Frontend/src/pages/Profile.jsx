@@ -16,7 +16,7 @@ const ProfilePage= () => {
   const [coupons, setCoupons] = useState([])
   const [reciept, setReciept] =  useState(null)
   const token = localStorage.getItem("token");
-
+ 
 
 
   useEffect(() => {
@@ -58,8 +58,8 @@ const ProfilePage= () => {
     }
 
     const handleConnect = () => {
-      console.log("connected")
       socket.emit("register_user", { userId });
+      console.log("connected")
     };
     
     socket.on("connect", handleConnect);
@@ -83,7 +83,14 @@ const ProfilePage= () => {
     }) 
 
     if(reciept) console.log(reciept)
-  }, []);
+
+      return () => {
+        socket.off("connect", handleConnect);
+        socket.off("registered_user");
+        socket.off("join_receipt_room");
+        socket.off("show_receipt");
+      };
+  }, [token]);
 
   useEffect(() => {
     if (reciept) {
@@ -123,7 +130,8 @@ const ProfilePage= () => {
               width: 300
             }}
           >
-            <h2 style={{ marginTop: 0 }}>Receipt</h2>
+            <div style={{color: "black"}}>
+            <h2 style={{ marginTop: 0}}>Receipt</h2>
             <p><strong>Order:</strong> {reciept?.order_number}</p>
             <p><strong>Customer:</strong> {reciept?.user_name}</p>
             <p><strong>Vendor Business:</strong> {reciept?.business_name}</p>
@@ -132,7 +140,8 @@ const ProfilePage= () => {
             <p><strong>Embers Spent:</strong> {reciept?.spent}</p>
             <p><strong>Remaining Price</strong> {reciept?.remaining_USD}</p>
             <button onClick={() => setReciept(null)}>Close</button>
-          </Box>
+            </div>
+         </Box>
         </Modal>
 
       {  
@@ -168,8 +177,6 @@ const ProfilePage= () => {
         </center>
         </div>
       )}
-      
-
     </div>
   </>)
 }

@@ -1,48 +1,27 @@
 import FlagIcon from '@mui/icons-material/Flag';
-import {useEffect, useState} from "react"
+import {useEffect, useState, useContext} from "react"
 import axios from 'axios';
+import Button from '@mui/material/Button';
+import TotalPointsContext from "../context/TotalPointsContext";
+import RaffleModal from "./RaffleModal"
 
 const GoalBar = () =>{
-    const [pointsEarned, setPointsEarned] = useState(0);
+    const {context} = useContext(TotalPointsContext)
+    const goal = 150000
+    let percent = Math.min((context.totalPoints / goal) * 100, 100);
 
-    // useEffect(() => {
-    //     const fetchPoints = async () => {
-    //       try {
-    //         const res = await axios.get("/api/points/getAll");
-    //         setPointsEarned(res.data)
-    //       } catch (error) {
-    //         console.log("No points received", error);
-    //       }
-    //     };
-    
-    //     fetchPoints();
+    useEffect(() => {
+      if(percent >= 100){
+            context.setIsGoalReached(true)
+          }
+    }, [percent, context]);
 
-    //     const interval = setInterval(fetchPoints, 10000);
-
-    //     return () => clearInterval(interval);
-    //   }, [])
-
-    const goal =  1000
-    let percent = Math.min((pointsEarned / goal) * 100, 100);
-
-    const bar =  {
-        display: "box",
-        width: "100%",
-        height: "20px",
-        borderRadius: "20px",
-        borderWidth: "2px",
-        borderStyle: 'solid',
-        borderColor: "white",
-        boxShadow: "0 0 5px orange",
-        overflow: "hidden",
-    }
-    
-    const progress =  {
-        width: `${percent}%`,
-        height: '100%',
-        backgroundColor: '#ff2400',
-        transition: 'width 0.3s ease',
-    }
+  const progress =  {
+    width: `${percent}%`,
+    height: '100%',
+    backgroundColor: '#ff2400',
+    transition: 'width 0.3s ease',
+  }
 
  return(
     <div style={container}>
@@ -54,13 +33,33 @@ const GoalBar = () =>{
 
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <h5 style={{...textStyle}}> {pointsEarned} / {goal} points earned</h5>
+        <h5 style={{...textStyle}}> {context.totalPoints} / {goal} points earned</h5>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <RaffleModal 
+          disabled={context.isGoalReached} 
+          />
+
+
         </div>
       </div>
        
     </div>
  )
 }
+
+const bar =  {
+  display: "box",
+  width: "100%",
+  height: "20px",
+  borderRadius: "20px",
+  borderWidth: "2px",
+  borderStyle: 'solid',
+  borderColor: "white",
+  boxShadow: "0 0 5px orange",
+  overflow: "hidden",
+}
+
 
 const container = {
   backgroundColor: "white",

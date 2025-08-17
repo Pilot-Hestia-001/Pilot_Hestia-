@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import MemberPage from "./pages/MemberPage";
+import AdminPage from "./pages/Admin"
 import ProfilePage from "./pages/Profile";
 import RewardsPage from "./pages/RewardsPage";
 import RegisterVendor from "./pages/RegisterVendor"
@@ -40,6 +41,7 @@ function App() {
         <Route path="/vendor/store" element={<VendorStorePage />}/>
         <Route path="/vendor/login" element={<LoginVendor />}/>
         <Route path="/vendor/register" element={<RegisterVendor />}/>
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/member" element={<MemberPage />} />
         <Route path="/rewards" element={<RewardsPage />} />
         <Route path="/profile" element={<ProfilePage />} />

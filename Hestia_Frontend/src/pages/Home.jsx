@@ -7,10 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import VendorSelectContext from "../context/VendorSelectContext";
 import headerBackground from "../Photos/HeaderBackground.jpeg"
 import axios from "axios"
+import {jwtDecode} from "jwt-decode"
+import socket from "../Utils/socket"
 import Button from '@mui/material/Button';
 import "../CSS/VendorCard.css";
 import ActivityCard from "../Components/ActivityCard";
 import NonUserMenu from "../Components/NonUserMenu"
+import TotalPointsContext from "../context/TotalPointsContext";
 const API_URL = import.meta.env.VITE_API_URL;
 
 
@@ -19,7 +22,45 @@ const Home = () => {
    const [vendors, setVendors] = useState([]);
    const [activities, setActivities] = useState([])
    const {selectedVendorId, setSelectedVendorId, handleVendorClick} = useContext(VendorSelectContext)
+   const {totalPoints, setTotalPoints} = useContext(TotalPointsContext)
    const [logged, setLogged] = useState(localStorage.getItem("loggedIn"))
+   const token = localStorage.getItem("token");
+
+   useEffect(() => {
+    if (!token) return;
+
+    let decoded;
+    try {
+      decoded = jwtDecode(token);
+    } catch (e) {
+      console.error("Invalid token", e);
+      return;
+    }
+
+    const userId = decoded?.id;
+
+    if (!userId) {
+      console.warn("User ID missing in token");
+      return;
+    }
+
+    const handleConnect = () => {
+      console.log("connected")
+      socket.emit("register_user", { userId });
+      socket.emit("join_goal_room", { userId });
+    };
+    
+    socket.on("connect", handleConnect);
+
+    socket.on("registered_user", ({userId}) =>{
+      console.log(`User ${userId} has joined`)
+    })
+
+    return () => {
+      socket.off("connect", handleConnect);
+      socket.off("registered_user");
+    };
+}, [token]);
    
 
    useEffect(() => {
