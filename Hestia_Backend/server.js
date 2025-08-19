@@ -247,6 +247,9 @@ app.use('/api/activities', activtiyRoutes);
 const pointsRoutes = require('./routes/pointsRoutes');
 app.use('/api/points', pointsRoutes);
 
+const adminRoutes = require('./routes/adminRoutes');
+app.use('/api/admin', adminRoutes)
+
 const userRoutes =  require('./routes/userRoutes');
 app.use('/api/user', userRoutes);
 

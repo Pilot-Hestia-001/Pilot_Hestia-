@@ -25,6 +25,27 @@ class RedemptionModel {
       .first();
   }
 
+  static async getVendorRedemptionStats() {
+    const result = await db('reward_redemptions as rr')
+      .join('rewards as r', 'rr.reward_id', 'r.id')
+      .join('vendors as v', 'rr.vendor_id', 'v.id')
+      .select(
+        'rr.vendor_id',
+        'v.business_name as business_name',
+        db.raw('COUNT(*) as total_redemptions'),
+        db.raw(`SUM(CASE WHEN rr.discount = 100 THEN 1 ELSE 0 END) as total_free_redemptions`),
+        db.raw(`
+          SUM(
+            TRUNC(r."UsdPrice" * (1 - (rr.discount::numeric / 100.0)), 2)
+          ) as total_cost_after_discounts
+        `)
+      )
+      .where('rr.status', 'redeemed')
+      .groupBy('rr.vendor_id', 'v.business_name');
+  
+    return result;
+  }
+
   static async getRedemptionInfo(code) {
     return await db('reward_redemptions as rr')
       .join('users as u', 'rr.user_id', 'u.id')

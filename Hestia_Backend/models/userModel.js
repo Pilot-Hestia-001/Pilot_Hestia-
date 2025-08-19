@@ -15,7 +15,9 @@ class UserModel {
       .returning('*');
     }
 
-    
+  static async getTotalUsers() {
+    return await db('users').count('*')
+  }
 
   static async findByEmail(email) {
     const user = await db('users').where({ email }).first();

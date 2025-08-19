@@ -40,7 +40,6 @@ const Home = () => {
     const userId = decoded?.id;
 
     if (!userId) {
-      console.warn("User ID missing in token");
       return;
     }
 
@@ -52,9 +51,7 @@ const Home = () => {
     
     socket.on("connect", handleConnect);
 
-    socket.on("registered_user", ({userId}) =>{
-      console.log(`User ${userId} has joined`)
-    })
+    socket.on("registered_user", {userId})
 
     return () => {
       socket.off("connect", handleConnect);
@@ -95,7 +92,6 @@ const Home = () => {
           const res = await axios.get(`${API_URL}/api/activities/retrieve`)
           const activityList = res?.data
           setActivities(activityList)
-          console.log(activities)
         } catch(e) {
           console.log("couldn't fetch activities")
         }

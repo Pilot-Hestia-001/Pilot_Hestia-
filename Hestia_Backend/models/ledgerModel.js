@@ -23,9 +23,9 @@ class LedgerModel {
     return result[0].total || 0;
   }
 
-  static async getTotalSpent(user_id) {
+  static async getTotalSpent() {
     const result = await db('ledger')
-      .where({ user_id, type: 'spend' })
+      .where({ type: 'spend' })
       .sum('amount as total');
     return result[0].total || 0;
   }
