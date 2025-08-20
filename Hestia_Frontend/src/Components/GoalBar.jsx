@@ -6,7 +6,7 @@ import RaffleModal from "./RaffleModal"
 const GoalBar = () =>{
     const {context} = useContext(TotalPointsContext)
     const goal = 150000
-    let percent = Math.min((context.totalPoints / goal) * 100, 100);
+    let percent = Math.min((Number(context.totalPoints) / goal) * 100, 100);
 
     useEffect(() => {
       if(percent >= 100){
@@ -25,14 +25,14 @@ const GoalBar = () =>{
     <div style={container}>
       <div style={{margin: "1em"}}>
          <h3 style={textStyle}><FlagIcon/> Goal to Scholarship Giveaway!</h3>
-        <div id="bar" style={bar}>
-        <div style={progress}>
-        </div>
-
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <h5 style={{...textStyle}}> {context.totalPoints} / {goal} points earned</h5>
-        </div>
+         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5em' }}>
+          <div id="bar" style={bar}>
+              <div style={progress}></div>
+          </div>
+          <h5 style={{...textStyle, alignSelf: 'flex-end'}}>
+              {Math.round(Number(context.totalPoints))} / {goal} points earned
+          </h5>
+      </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <RaffleModal 
           disabled={context.isGoalReached} 

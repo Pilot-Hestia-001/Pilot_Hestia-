@@ -5,7 +5,7 @@ import RewardCarousel from "../Components/RewardCarousel";
 import { useEffect, useState, useContext} from "react";
 import { useNavigate } from 'react-router-dom';
 import VendorSelectContext from "../context/VendorSelectContext";
-import headerBackground from "../Photos/HeaderBackground.jpeg"
+import headerBackground from "/Photos/HeaderBackground.jpeg"
 import axios from "axios"
 import {jwtDecode} from "jwt-decode"
 import socket from "../Utils/socket"
