@@ -5,18 +5,23 @@ const ActivityGrid = ({ activities, onCardClick, isSelected }) => {
  
   return (
     <Grid container spacing={2}>
+      <div style={{
+        maxHeight: 400, // set scrollable height
+        overflowY: "auto",
+        padding: 1,
+        }}>
       {activities.map((activity, index) => (
-        <div style={{padding:"2px"}}>
-        <Grid item xs={2} sm={2} md={2} key={index}>
+        <div>
+        <Grid item xs={12} key={index}>
           <Card 
-          sx={{ maxWidth: 150, borderRadius: 3, cursor: 'pointer', boxShadow: (isSelected === activity.id) ? "0 0 10px #FF5F00" : "0 0 3px #FF5F00", border: (isSelected === activity.id) ? "3px solid #FF5F00" : "none"}}
+          sx={{ width: 200, height:200, borderRadius: 3, cursor: 'pointer', boxShadow: (isSelected === activity.id) ? "0 0 10px #FF5F00" : "0 0 3px #FF5F00", border: (isSelected === activity.id) ? "3px solid #FF5F00" : "none", marginBottom: 5}}
           onClick={() => onCardClick(activity)}
           >
             <CardMedia
               component="img"
               height="100"
-              image={activity.img}
-              alt={activity.title}
+              image={activity?.img}
+              alt={activity?.title}
             />
             <CardContent>
               <Typography variant="h6" sx={{fontSize:"20px"}} component="div">
@@ -30,6 +35,7 @@ const ActivityGrid = ({ activities, onCardClick, isSelected }) => {
         </Grid>
         </div>
       ))}
+      </div>
     </Grid>
   );
 };
