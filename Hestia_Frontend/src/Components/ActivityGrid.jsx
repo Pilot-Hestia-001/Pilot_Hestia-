@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid, Card, CardContent, CardMedia, Typography } from '@mui/material';
-import { useState } from 'react';
 
 const ActivityGrid = ({ activities, onCardClick, isSelected }) => {
  

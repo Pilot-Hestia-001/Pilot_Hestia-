@@ -34,7 +34,6 @@ const RewardsPage = () => {
      }, [])
 
      const handleCardClick = (reward) => {
-      console.log("Reward selected:", reward);
       setSelectedReward(reward); // Save selected activity
     };
 

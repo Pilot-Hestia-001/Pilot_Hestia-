@@ -64,6 +64,7 @@ const Vendor = ({img, business_name, onUpload, isSelected, onClick}) => {
           style={{ width: '110px', height: '110px', borderRadius: '50%' }}
           src={preview}
           alt="vendor_img"
+          loading="lazy"
         />
       )}
 

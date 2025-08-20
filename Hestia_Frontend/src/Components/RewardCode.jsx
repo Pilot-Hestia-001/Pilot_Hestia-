@@ -2,7 +2,6 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import axios from 'axios';
-import socket from '../Utils/socket'
 const API_URL = import.meta.env.VITE_API_URL;
 
 const RewardCode = ({order_number, first_name, last_name, title, size, discount, cost}) => {

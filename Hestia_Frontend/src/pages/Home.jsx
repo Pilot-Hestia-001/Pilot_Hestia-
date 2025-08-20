@@ -114,7 +114,7 @@ const Home = () => {
             }
 
         
-          <div style={containerStyle2}>
+          <div style={containerStyle2} fetchpriority="high">
                
             <div style={heroContentStyle}>
                <h2 style={headerStyle}>Earn Points. Get Rewards. Power Your Community.</h2>

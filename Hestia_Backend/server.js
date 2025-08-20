@@ -7,6 +7,7 @@ const { v2: cloudinary } = require('cloudinary');
 const streamifier = require('streamifier');
 const { connectedUsers, connectedVendors, pendingReceipts} = require('./connections');
 const joinedReceiptRooms = new Map();
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -256,6 +257,42 @@ app.use('/api/user', userRoutes);
 const vendorRoutes = require('./routes/vendorRoutes');
 const { join } = require('path');
 app.use('/api/vendor', vendorRoutes);
+
+
+app.post('/api/contact', async (req, res) => {
+  const { firstName, lastName, email, message } = req.body;
+
+  if (!firstName || !lastName || !email || !message) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+  
+  try {
+    // create a transporter
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com", // replace with your SMTP host
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER, // your email
+        pass: process.env.SMTP_PASS // your email password or app password
+      }
+    });
+
+    // send the email
+    await transporter.sendMail({
+      from: `"${firstName} ${lastName}" <${email}>`, // sender
+      to: "elijah@projecthestia.org", // where you want to receive it
+      subject: `Contact Form Message from ${firstName} ${lastName}`,
+      text: message,
+      html: `<p>${message}</p><p><strong>Sender's Email:</strong> ${email}</p>`
+    });
+
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to send message" });
+  }
+});
 
 app.use(express.static(path.join(__dirname, 'dist')));
 app.get(/^\/(?!api).*/, (req, res) => {

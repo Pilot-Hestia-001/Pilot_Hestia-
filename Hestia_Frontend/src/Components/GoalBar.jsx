@@ -1,7 +1,5 @@
 import FlagIcon from '@mui/icons-material/Flag';
-import {useEffect, useState, useContext} from "react"
-import axios from 'axios';
-import Button from '@mui/material/Button';
+import {useEffect, useContext} from "react"
 import TotalPointsContext from "../context/TotalPointsContext";
 import RaffleModal from "./RaffleModal"
 

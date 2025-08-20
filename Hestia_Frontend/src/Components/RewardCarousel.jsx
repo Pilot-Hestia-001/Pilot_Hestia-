@@ -13,10 +13,26 @@ const RewardCarousel = ({id}) => {
 
     useEffect(() => {
         const fetchRewards = async() => {
+              const cacheKey = `rewards-${id}`;
+              const cached = localStorage.getItem(cacheKey);
+              if (cached) {
+                const { data, timestamp } = JSON.parse(cached);
+                if (Date.now() - timestamp < 5 * 60 * 1000) { // 5 min TTL
+                  setRewardList(data);
+                  return;
+                }
+              }
+
+
               try{
                 const res = await axios.get(`${API_URL}/api/rewards/${id}`)
+  
                 setRewardList(res?.data)
-                console.log(rewardList[0])
+
+                localStorage.setItem(
+                  cacheKey,
+                  JSON.stringify({ data: res.data, timestamp: Date.now() })
+                );
             } catch(e) {
                 console.error("Could't get rewards")
             }

@@ -21,11 +21,23 @@ const ProfilePage= () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const cachedUser = localStorage.getItem("cachedUser");
+
+      if (cachedUser) {
+        setUser(JSON.parse(cachedUser)); // load from cache first
+      }
+
       try {
         const userRes = await axios.get(`${API_URL}/api/user/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setUser(userRes.data);
+
+      const { first_name, last_name, qr_url } = userRes?.data;
+        const minimalUser = { first_name, last_name, qr_url };
+
+        setUser(minimalUser);
+
+        localStorage.setItem("cachedUser", JSON.stringify(minimalUser));
   
         const couponsRes = await axios.get(`${API_URL}/api/rewards/coupon`, {
           headers: { Authorization: `Bearer ${token}` }

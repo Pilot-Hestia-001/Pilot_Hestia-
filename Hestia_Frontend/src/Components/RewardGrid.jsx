@@ -8,13 +8,11 @@ const API_URL = import.meta.env.VITE_API_URL;
 const RewardGrid = ({ id }) => {
 
     const [rewardList, setRewardList] = useState([]);
-    console.log(id)
     useEffect(() => {
         const fetchRewards = async() => {
               try{
                 const res = await axios.get(`${API_URL}/api/rewards/${id}`)
                 setRewardList(res?.data)
-                console.log(rewardList[0])
             } catch(e) {
                 console.error("Could't get rewards")
             }
@@ -26,7 +24,7 @@ const RewardGrid = ({ id }) => {
     <Grid container spacing={4} justifyContent="center">
       {rewardList.map((reward, index) => (
        
-        <Grid sx={flex} item xs="auto" sm={6} md={6} key={index} >
+        <Grid sx={flex} key={index}>
           <Card 
           sx={{ ...flex, padding: ".5em",  width: 150, height: 230 , borderRadius: 3, cursor: 'pointer', boxShadow:  "0 0 3px #FF5F00"}}
           >

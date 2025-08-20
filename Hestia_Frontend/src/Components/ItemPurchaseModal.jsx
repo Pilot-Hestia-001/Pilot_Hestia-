@@ -71,7 +71,6 @@ const ItemPurchaseModal = ({id, img, rewardTitle, quantity, cost, usdPrice, vend
         if(res?.data){
             setUser(res?.data)
         }
-        console.log(res?.data)
       } catch(e) {
         console.log("couldn't fetch user", e)
       }

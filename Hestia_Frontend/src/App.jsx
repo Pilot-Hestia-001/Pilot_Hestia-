@@ -15,6 +15,7 @@ import RegisterVendor from "./pages/RegisterVendor"
 import LoginVendor from "./pages/LoginVendor"
 import VendorStorePage from "./pages/VendorSettings";
 import PurchasedRewards from "./pages/PurchasedRewards";
+import ContactPage from "./pages/ContactPage";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -37,6 +38,7 @@ function App() {
 
   return (
       <Routes>
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/vendor/rewards" element={<PurchasedRewards />} />
         <Route path="/vendor/store" element={<VendorStorePage />}/>
         <Route path="/vendor/login" element={<LoginVendor />}/>

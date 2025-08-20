@@ -1,8 +1,6 @@
 import HamburgerMenu from "../Components/Menu";
 import LockIcon from '@mui/icons-material/Lock';
 import BasicModal from "../Components/modal";
-import Button from '@mui/material/Button';
-
 
 const Lock = () => {
     return(
