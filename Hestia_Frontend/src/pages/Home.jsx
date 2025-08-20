@@ -23,8 +23,8 @@ const Home = () => {
    const [activities, setActivities] = useState([])
    const {selectedVendorId, setSelectedVendorId, handleVendorClick} = useContext(VendorSelectContext)
    const {totalPoints, setTotalPoints} = useContext(TotalPointsContext)
-   const [logged, setLogged] = useState(localStorage.getItem("loggedIn"))
    const token = localStorage.getItem("token");
+   const [logged, setLogged] = useState(!!token);
 
    useEffect(() => {
     if (!token) return;
