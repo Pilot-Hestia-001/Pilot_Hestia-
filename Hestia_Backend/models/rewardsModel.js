@@ -19,40 +19,58 @@ class RewardModel {
     return db('rewards').where( {id} ).first()
   }
 
-  // Redeem a reward
-  static async redeemReward({ user_id, reward_id }) {
-    
+   static  async updateSize(reward_id, sizeKey, value){
+    // Option 1: If sizes is TEXT or JSON string, fetch → update → save
     const reward = await db('rewards').where({ id: reward_id }).first();
     if (!reward) throw new Error('Reward not found');
 
-    const vendor_id = reward.vendor_id;
-    if (!vendor_id) throw new Error('Vendor ID missing from reward');
+    let sizes = typeof reward.sizes === 'string' 
+      ? JSON.parse(reward.sizes) 
+      : reward.sizes;
 
-    // Check points balance
-    const userPoints = await db('points').where({ user_id }).first();
-    const balance = userPoints?.balance ?? 0;
-    if (balance < reward.cost) return null;
+    sizes[sizeKey] = value;
 
-    // Deduct points from points table
-    await db('points')
-      .where({ user_id })
-      .decrement('balance', reward.cost);
-
-    // Log the deduction in the ledger
-    await db('ledger').insert({
-      user_id,
-      vendor_id: vendor_id,
-      amount: -reward.cost,
-      type: 'spend',
-      description: `Redeemed: ${reward.title}`
-    });
-
-    // Decrease available reward quantity
     await db('rewards')
       .where({ id: reward_id })
-      .decrement('quantity', 1);
-    
-    return reward;
+      .update({ sizes: JSON.stringify(sizes) });
+
+    return sizes;
+  }
+
+  // Redeem a reward
+  static async redeemReward({ user_id, reward_id, cost}) {
+
+    return await db.transaction(async trx => {
+      const reward = await trx('rewards').where({ id: reward_id }).first();
+      if (!reward) throw new Error('Reward not found');
+      if (!reward.vendor_id) throw new Error('Vendor ID missing from reward');
+      if (reward.quantity <= 0) throw new Error('Reward out of stock');
+  
+      const userPoints = await trx('points').where({ user_id }).first();
+      const balance = userPoints?.balance ?? 0;
+      if (balance < cost) throw new Error('Insufficient balance');
+  
+      // Deduct points
+      await trx('points')
+        .where({ user_id })
+        .decrement('balance', cost);
+  
+      // Ledger entry
+      await trx('ledger').insert({
+        user_id,
+        vendor_id: reward.vendor_id,
+        amount: -cost,
+        type: 'spend',
+        description: `Redeemed: ${reward.title}`
+      });
+  
+      // Decrease reward quantity
+      await trx('rewards')
+        .where({ id: reward_id })
+        .decrement('quantity', 1);
+  
+      return reward;
+    });
   }
 }
 

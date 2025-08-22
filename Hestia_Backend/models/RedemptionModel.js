@@ -1,8 +1,9 @@
 const db = require('../db');
 
+
 class RedemptionModel {
   // Create a redemption entry (optional, you may handle everything in reward_codes)
-  static async create({ user_id, vendor_id, reward_id, code }) {
+  static async create({ user_id, vendor_id, reward_id, code, discount, size }) {
     const [redemption] = await db('reward_redemptions')
       .insert({
         user_id,
@@ -10,6 +11,8 @@ class RedemptionModel {
         reward_id,
         code,
         status: 'pending',
+        discount,
+        size
       })
       .returning('*');
     return redemption;
@@ -22,21 +25,65 @@ class RedemptionModel {
       .first();
   }
 
+  static async getVendorRedemptionStats() {
+    const result = await db('reward_redemptions as rr')
+      .join('rewards as r', 'rr.reward_id', 'r.id')
+      .join('vendors as v', 'rr.vendor_id', 'v.id')
+      .select(
+        'rr.vendor_id',
+        'v.business_name as business_name',
+        db.raw('COUNT(*) as total_redemptions'),
+        db.raw(`SUM(CASE WHEN rr.discount = 100 THEN 1 ELSE 0 END) as total_free_redemptions`),
+        db.raw(`
+          SUM(
+            TRUNC(r."UsdPrice" * (1 - (rr.discount::numeric / 100.0)), 2)
+          ) as total_cost_after_discounts
+        `)
+      )
+      .where('rr.status', 'redeemed')
+      .groupBy('rr.vendor_id', 'v.business_name');
+  
+    return result;
+  }
+
+  static async getRedemptionInfo(code) {
+    return await db('reward_redemptions as rr')
+      .join('users as u', 'rr.user_id', 'u.id')
+      .join('vendors as v', 'rr.vendor_id', 'v.id')
+      .join('rewards as r', 'rr.reward_id', 'r.id')
+      .select(
+        'rr.order_number',
+        'rr.discount',
+        'r.cost',
+        'r.title',
+        'u.email',
+        'u.first_name as user_first_name',
+        'u.last_name as user_last_name',
+        'v.business_name',
+        'v.first_name as vendor_first_name',
+        'v.last_name as vendor_last_name',
+        'u.id as user_id',
+        'v.id as vendor_id',
+        'r.id as reward_id'
+      )
+      .where('rr.code', code)
+      .first();
+  }
+
   // Vendor validates and confirms redemption
   static async redeem(code) {
     console.log(code)
-    const exists = await db('reward_redemptions').where({ code }).first();
+   const exists = await db('reward_redemptions').where({ code }).first();
    if (!exists) return null; // or throw an error
 
-    const [updated] = await db('reward_redemptions')
+    await db('reward_redemptions')
       .where({ code })
       .update({
         status: 'redeemed',
         redeemed_at: db.fn.now(),
-      })
-      .returning('*');
-      
-    return updated;
+    })
+
+    return await this.getRedemptionInfo(code);
   }
 
   // Cancel a redemption (if needed)

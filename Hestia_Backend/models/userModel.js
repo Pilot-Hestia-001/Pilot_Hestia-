@@ -13,12 +13,25 @@ class UserModel {
         console.error("Unable to generate QRCode");
       }
 
+<<<<<<< HEAD
       return await db("users")
         .insert({ first_name, last_name, email, password, qr_code, qr_url })
         .returning("*");
     } catch {
       console.error("Unable to create user.");
     }
+=======
+    // Optional: create QR image data URL
+    const qr_url = await QRCode.toDataURL(qr_code);
+
+    return await db('users')
+      .insert({ first_name, last_name, email, password, qr_code, qr_url})
+      .returning('*');
+    }
+
+  static async getTotalUsers() {
+    return await db('users').count('*')
+>>>>>>> main
   }
 
   static async findByEmail(email) {

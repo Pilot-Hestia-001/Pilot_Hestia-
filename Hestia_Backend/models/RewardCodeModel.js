@@ -2,9 +2,9 @@ const db = require('../db');
 
 class RewardCodeModel {
   // Create a reward code entry
-  static async create({ user_id, reward_id, code }) {
+  static async create({ user_id, reward_id, code}) {
     const [inserted] = await db('reward_codes')
-      .insert({ user_id, reward_id, code })
+      .insert({ user_id, reward_id, code})
       .returning('*');
     return inserted;
   }

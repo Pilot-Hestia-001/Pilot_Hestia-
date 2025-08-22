@@ -4,12 +4,19 @@ const crypto = require("crypto");
 const UserModel = require("../models/userModel");
 require("dotenv").config();
 const sendEmail = require("../utils/sendEmail");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+const UserModel = require("../models/userModel");
+const PointsModel = require("../models/pointsModel");
+require("dotenv").config();
 
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
+
 const register = async (req, res) => {
   const { first_name, last_name, email, password } = req.body;
 
@@ -27,6 +34,8 @@ const register = async (req, res) => {
       password: hashedPassword,
     });
 
+    await PointsModel.createForUser(newUser.id);
+
     const token = generateToken(newUser.id);
     res.status(201).json({ token });
   } catch (error) {
@@ -36,12 +45,16 @@ const register = async (req, res) => {
 };
 
 const logout = (req, res) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "Strict",
-  });
-  res.status(200).json({ message: "Logged out successfully" });
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+    });
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (e) {
+    console.error("error logging out");
+  }
 };
 
 const login = async (req, res) => {
@@ -60,7 +73,7 @@ const login = async (req, res) => {
 
     const token = generateToken(existingUser.id);
     res.json({ token });
-  } catch {
+  } catch (err) {
     console.error("Login error:", err); // helpful for debugging
     res.status(500).json({ message: "Something went wrong during login" });
   }

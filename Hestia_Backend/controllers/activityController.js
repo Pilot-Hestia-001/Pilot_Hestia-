@@ -1,15 +1,18 @@
 const ActivityModel = require("../models/ActivityModel");
 const LedgerModel = require("../models/ledgerModel");
 const Points = require("../models/pointsModel");
+const io = require("../server");
 
 const createActivity = async (req, res) => {
-  const { title, description, points } = req.body;
+  const { title, description, points, img } = req.body;
   try {
     const activity = await ActivityModel.createActivity({
       title,
       description,
       points,
+      img,
     });
+
     res.status(201).json(activity);
   } catch (err) {
     console.error("Error creating activity:", err);
@@ -35,7 +38,7 @@ const completeActivity = async (req, res) => {
     if (!activity)
       return res.status(404).json({ message: "Activity not found" });
 
-    const points = activity.points || 0;
+    const points = activity?.points || 0;
 
     // Update points table
     await Points.updateBalance(user_id, points);
@@ -47,6 +50,18 @@ const completeActivity = async (req, res) => {
       amount: points,
       type: "earn",
       description: `Completed activity: ${activity.title}`,
+    });
+
+    const totalPoints = await LedgerModel.getTotalEarned();
+
+    io.to("goal_room").emit("update_total_points", {
+      updatedPoints: totalPoints,
+    });
+
+    const totalPoints = await LedgerModel.getTotalEarned();
+
+    io.to("goal_room").emit("update_total_points", {
+      updatedPoints: totalPoints,
     });
 
     res.json({ message: "Points awarded", amount: points });
