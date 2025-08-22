@@ -2,6 +2,7 @@ import TotalPointsContext from "./TotalPointsContext"
 import axios from "axios"
 import { useState, useEffect } from "react";
 import socket from "../Utils/socket"
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 const TotalPointsProvider = ({children}) => {
@@ -11,7 +12,7 @@ const TotalPointsProvider = ({children}) => {
        useEffect(() => {
         const fetchPoints = async () => {
           try {
-            const res = await axios.get("/api/points/getAll");
+            const res = await axios.get(`${API_URL}/api/points/getAll`);
             setTotalPoints(res?.data)
             console.log(res?.data)
           } catch (error) {
