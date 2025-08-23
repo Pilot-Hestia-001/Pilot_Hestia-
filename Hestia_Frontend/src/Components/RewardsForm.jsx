@@ -88,7 +88,7 @@ const RewardForm = () => {
                 img: uploadedImageUrl, 
               };
               console.log(rewardData)
-            const res = await axios.post('/api/rewards/create', rewardData)
+            const res = await axios.post(`${API_URL}/api/rewards/create`, rewardData)
             if (res.status !== 200 && res.status !== 201) {
                 throw new Error('Failed to submit reward');
               }
