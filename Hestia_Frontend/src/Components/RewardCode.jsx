@@ -14,7 +14,7 @@ const RewardCode = ({order_number, first_name, last_name, title, size, discount,
             const res = await axios.put(`${API_URL}/api/rewards/redeem`, {code: passcode})
             console.log(res?.message)
         } catch(e) {
-            console.log("error:", e.message)
+            console.error("Redeem error:", e.response?.data || e.message);
         }
     }
 

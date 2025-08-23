@@ -14,9 +14,9 @@ const ActivityCard = ({title, description, cost, img, num}) => {
 
     return(
         <>
-         <motion.div ref={ref} animate={fadeIn}>
+         <motion.div id="hello" ref={ref} animate={fadeIn}>
          { isEven?
-        <div style={{...container}}>
+        <div className="container" style={{...container}}>
             
            <img src={img} alt={title} style={imgStyle} />
 
@@ -46,9 +46,10 @@ const container = {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    width: "90%",
+    width: 350,
     height: "150px",
     padding: "10px",
+    margin: 0,
     color: "white",
     backgroundColor: "#FF5F00",
     borderWidth: "2px",

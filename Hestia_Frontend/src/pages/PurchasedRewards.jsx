@@ -42,7 +42,7 @@ const PurchasedRewards = () => {
 
       socket.on("registered_vendor", ({vendorId}) =>{
       console.log("connected", vendorId)
-      
+      socket.emit("join_vendor_room", {vendorId})
       })
 
       socket.on("new_coupon", (coupon) => {
@@ -85,7 +85,7 @@ const PurchasedRewards = () => {
 
     useEffect(() => {
       if (!token || reciept !== null) return;
-      
+        
         const fetchData = async () => {
           try {
             const couponsRes = await axios.get(`${API_URL}/api/rewards/vendor/coupon`, {
@@ -94,7 +94,7 @@ const PurchasedRewards = () => {
             setReward(couponsRes?.data);
             console.log("coupons", couponsRes?.data)
           } catch (e) {
-            console.log("Error fetching profile data:", e);
+            console.error(e);
           }
         };
       

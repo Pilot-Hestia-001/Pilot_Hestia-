@@ -4,6 +4,8 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField';
 import Button from  '@mui/material/Button'
 import axios from "axios";
+import Footer from "../Components/Footer";
+import { Height } from "@mui/icons-material";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ContactPage = () => {
@@ -91,9 +93,10 @@ const ContactPage = () => {
         <div id="superContainer" style={containerStyle1}>
             <HamburgerMenu></HamburgerMenu>
 
-            <h1>Contact Us!</h1>
+            
 
             <div style={containerStyle2}>
+            <h1>Contact Us!</h1>
             <Box component="section" sx={{ p: 2, border: 1, borderRadius: 2  }} style={box}>
                 
                 <TextField 
@@ -160,7 +163,7 @@ const ContactPage = () => {
                 )}
             </Box>
         </div>
-
+                <Footer></Footer>
         </div>
     )
 }
@@ -169,6 +172,7 @@ export default ContactPage
 const containerStyle1 = {
     position: "relative",
     width: "100%",
+    height: "100vh",
     overflowX: "hidden",
     display: "flex",
     color: "black",
@@ -178,9 +182,11 @@ const containerStyle1 = {
   };
 
   const containerStyle2 = {
+    flex: 1,
     position: "relative",
     margin: "0 auto",
     display: "flex",
+    flexDirection:"column",
     justifyContent: "center",
     alignItems: "center",
   };

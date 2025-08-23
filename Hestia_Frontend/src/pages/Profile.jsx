@@ -7,6 +7,7 @@ import {jwtDecode} from "jwt-decode"
 import socket from "../Utils/socket"
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import Footer from "../Components/Footer";
 const API_URL = import.meta.env.VITE_API_URL;
 
 
@@ -91,10 +92,7 @@ const ProfilePage= () => {
 
     socket.on("show_receipt",(reciept) => {
       setReciept(reciept)
-      console.log(reciept)
     }) 
-
-    if(reciept) console.log(reciept)
 
       return () => {
         socket.off("connect", handleConnect);
@@ -106,7 +104,6 @@ const ProfilePage= () => {
 
   useEffect(() => {
     if (reciept) {
-      console.log("Receipt received:", reciept);
       setOpen(true);
     }
   }, [reciept]);
@@ -116,18 +113,21 @@ const ProfilePage= () => {
     setReciept(null);
   };
 
-  return(<>
+  return(
+  <div style={containerStyle1}>
+  <HamburgerMenu></HamburgerMenu>
    <div style={{...flex, color: "black"}}>
-      <HamburgerMenu></HamburgerMenu>
+     
       <h1 style={{color : "black", fontSize: "35px"}}> Profile </h1>
 
       <div style={qrContainer}>
         <img style={{width:"100%"}} src={user?.qr_url} alt="" />
       </div>
-
+      {
+      reciept && (
         <Modal
           open={!!reciept}
-          onClose={() =>  handleClose}
+          onClose={handleClose}
         >
           <Box
             sx={{
@@ -155,9 +155,10 @@ const ProfilePage= () => {
             </div>
          </Box>
         </Modal>
+        )}
 
       {  
-         coupons?.length > 0 ? (
+         coupons?.length > 0 && coupons.some(c => c.status === "pending") ?(
         <>
         <div style={flex}>
             <h2 style={{textAlign: "center"}}>Purchased Rewards</h2>
@@ -183,22 +184,33 @@ const ProfilePage= () => {
         </div>
       </>
       ) : (
-        <div style={{color: "black"}}>
-        <center>
+        <div style={{color: "black", alignText:"center"}}>
           <h3>No Coupons Have Been Purchased Yet</h3>
-        </center>
         </div>
       )}
     </div>
-  </>)
+    <Footer></Footer>
+    </div>
+   
+   )
 }
+
 const flex = {
-  width:"100%",
+  flex: 1,
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center"
+  alignItems: "center",
 }
+
+const containerStyle1 = {
+  width: "100%",
+  minHeight: "100vh",
+  display: "flex",
+  color: "black",
+  flexDirection: 'column',
+  alignItems: "center",
+  margin: 0
+};
 
 const qrContainer = {
   width: 250,

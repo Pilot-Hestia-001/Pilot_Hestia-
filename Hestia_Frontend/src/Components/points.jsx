@@ -24,12 +24,12 @@ const Points = () => {
     }
 
     getPoints()
-  }, [])
+  }, [token])
 
   return(
     <>
     <div style={{margin: 0}}>
-      <h3 style={{fontSize: "13px", color:"white", margin: 0}}>{points} Embers</h3>
+      <h3 style={{fontSize: "13px", color:"white", margin: 0}}>{points.toLocaleString()} Embers</h3>
     </div>   
     </>
   )

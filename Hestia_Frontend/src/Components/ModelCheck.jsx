@@ -17,6 +17,7 @@ const ModalCheck = ({size, id}) => {
     try{
         const res = await axios.put(`${API_URL}/api/rewards/update/size`, formData)
         console.log(res?.data)
+        handleClose();
     } catch(e) {
        console.log("something went wrong with updating sizes", e)
     }
@@ -31,13 +32,13 @@ const ModalCheck = ({size, id}) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box>
                     <Typography sx={{  marginBottom: "10px"}} id="modal-modal-title" variant="h6" component="h2">
                        Are you sure? 
                     </Typography>
                     
                     <div>
-                    <Button onClick={handleSubmit(e.target.name)} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:"12px", fontWeight: 600,}} >Yes</Button>
+                    <Button onClick={handleSubmit} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:"12px", fontWeight: 600,}} >Yes</Button>
                     <Button onClick={handleClose} variant="contained" sx={{ backgroundColor: '#ff2400', color: 'white', marginTop:"12px", fontWeight: 600,}} >cancel</Button>
                     </div>
                 </Box>

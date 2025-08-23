@@ -45,6 +45,24 @@ const HamburgerMenu = () => {
     return (
       <div id="nav" style={stickyBarStyle}>
         <div>
+          <div style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center", // <-- centers items horizontally
+              justifyContent: "center", // <-- centers items vertically in container if container has height
+          }}>
+              <img style={{ width: 60, margin: 0, paddingRight: "3px"}} src="/Photos/PH_logo.png" alt="project_hestia logo" />
+              <div style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start", // <-- centers items horizontally
+                  justifyContent: "start"}}>
+                <p style={{ color: "white", fontWeight: "bold", margin: 0, fontSize: 20 }}>HESTIA Events</p>
+                <Points></Points>
+              </div>
+          </div>
+        </div>
+
           <Button
             id="basic-button"
             aria-controls={open ? 'basic-menu' : undefined}
@@ -73,27 +91,23 @@ const HamburgerMenu = () => {
           <MenuItem onClick={() => handleClose("/contact")}> <ContactMailOutlinedIcon fontSize='small'/>&ensp;Contact Us</MenuItem>
           <MenuItem onClick={() => handleLogout("/login")} style={{"color" : "red"}}>Logout</MenuItem>
           </Menu>
-        </div>
-          <div>
-          <Points></Points>
-          </div>
+         
         
       </div>
     );
 }
 
 const stickyBarStyle = {
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  position: "sticky",
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '10px 20px',
+  backgroundColor: '#ff2400',
+  position: 'sticky',
   top: 0,
   zIndex: 10,
-  backgroundColor: "#ff2400",
-  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-  justifyContent: "space-between", 
-  padding: "10px",
-  paddingRight: "25px",
+  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
 };
 
 export default HamburgerMenu;

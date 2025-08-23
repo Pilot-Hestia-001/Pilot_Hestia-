@@ -8,12 +8,14 @@ const redeemCode = async (req, res) => {
   const { code } = req.body;
   try {
     const codeEntry = await RewardCodeModel.findByCode(code);
-    if (!codeEntry || codeEntry.used) {
+    if (!codeEntry || codeEntry?.used) {
       return res.status(400).json({ message: 'Invalid or already used code' });
     }
 
     await RewardCodeModel.markAsUsed(codeEntry.id);
     const redemption = await RedemptionModel.redeem(codeEntry.code);
+
+    if(!redemption) return res.status(500).json({ message: 'Something went wrong...' });
    
     res.json({message: "redeemed"})
 

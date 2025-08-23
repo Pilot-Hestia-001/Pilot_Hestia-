@@ -6,11 +6,10 @@ const io = require("../server")
 
 const createActivity = async (req, res) =>{
     const { title, description, points, img } = req.body;
-  try {
+    try {
     const activity = await ActivityModel.createActivity({ title, description, points, img });
-    
     res.status(201).json(activity);
-  } catch (err) {
+    } catch (err) {
     console.error('Error creating activity:', err);
     res.status(500).json({ message: 'Failed to create activity' });
   }
@@ -71,7 +70,7 @@ const completeActivity = async (req, res) => {
 
  const deleteActivity = async (req, res) => {
     const { id } = req.params;
-  
+    
     try {
       await ActivityModel.deleteActivity(id);
       res.json({ message: 'Activity deleted successfully' });

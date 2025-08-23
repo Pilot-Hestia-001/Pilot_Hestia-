@@ -14,6 +14,7 @@ import "../CSS/VendorCard.css";
 import ActivityCard from "../Components/ActivityCard";
 import NonUserMenu from "../Components/NonUserMenu"
 import TotalPointsContext from "../context/TotalPointsContext";
+import Footer from "../Components/Footer";
 const API_URL = import.meta.env.VITE_API_URL;
 
 
@@ -171,7 +172,7 @@ const Home = () => {
         </div>
 
         <div style={{width: "100%" , display:"flex", justifyContent:"center", alignItems:"center"}}>
-            <h1 style={{...headerStyle2, fontSize: "30px"}}>See what's happening!</h1>
+            <h1 style={{...headerStyle2, fontSize: "30px"}}>See What's Happening!</h1>
           </div>
 
         <div style={{width:"100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "10px", gap: "10px"}}>
@@ -186,6 +187,11 @@ const Home = () => {
          />
          ))}
         </div>
+
+      
+          <Footer>
+          </Footer>
+       
       </div>
    )
   }

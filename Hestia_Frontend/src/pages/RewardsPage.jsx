@@ -4,6 +4,7 @@ import VendorSelectContext from "../context/VendorSelectContext";
 import VendorCard from "../Components/VendorCard"
 import RewardGrid from "../Components/RewardGrid";
 import axios from "axios"
+import Footer from "../Components/Footer";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const RewardsPage = () => {
@@ -68,6 +69,9 @@ const RewardsPage = () => {
                   />
              </div>
            </div>
+
+           <Footer>
+          </Footer>
          </div>
     </>
  )

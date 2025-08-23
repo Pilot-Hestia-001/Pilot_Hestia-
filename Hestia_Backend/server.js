@@ -20,7 +20,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ['https://pilot-hestia-frontend.onrender.com', "http://localhost:5173"], // Adjust as needed
+    origin: ["https://www.projecthestia.events",'https://pilot-hestia-frontend.onrender.com', "http://localhost:5173"], // Adjust as needed
     methods: ['GET', 'POST']
   }
 });
@@ -65,6 +65,16 @@ io.on('connection', (socket) => {
     connectedVendors.set(vendorId, socket.id);
     socket.emit("registered_vendor", {vendorId})
   });
+
+  socket.on('join_vendor_room', ({ vendorId }) => {
+    const roomName = `vendor_${vendorId}`;
+  
+    // Have the socket join the room
+    socket.join(roomName);
+  
+    console.log(`Vendor ${vendorId} joined room: ${roomName}`);
+  });
+  
 
   socket.on("join_goal_room", ({ userId }) => {
     const registeredUserSocketId = connectedUsers.get(userId);
@@ -168,7 +178,7 @@ io.on('connection', (socket) => {
 
 app.use(express.json()); 
 app.use(cors({
-    origin: ['https://pilot-hestia-frontend.onrender.com', "http://localhost:5173"],
+    origin: ["https://www.projecthestia.events",'https://pilot-hestia-frontend.onrender.com', "http://localhost:5173"],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   }));

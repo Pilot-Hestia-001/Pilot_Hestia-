@@ -16,7 +16,6 @@ const getAllpoints = async (req, res) => {
   try{
     const points = await LedgerModel.getTotalEarned();
     if (points === null) return res.status(404).json({ message: 'Points record not found' });
-   
     res.json(Number(points));
   } catch(err) {
     console.error('Error getting points:', err);
