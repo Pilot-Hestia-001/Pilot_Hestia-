@@ -128,13 +128,10 @@ export default function RaffleModal({disabled}) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            {
-              !mustSpin ?
-            
               <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignContent:"center"}}>
                 
                 {
-                  winner && !mustSpin ?
+                  winner ?
                 <>
                 <h1 style={{textAlign: "center"}}>Raffle Winner!</h1>
                 <h1 style={{textAlign: "center"}}>{winner}</h1>
@@ -165,30 +162,6 @@ export default function RaffleModal({disabled}) {
 
               }
               </div>
-
-            :
-
-            <div>
-              <h1 style={{textAlign: "center"}}>Raffle:</h1>
-              <div style={{display:"flex", justifyContent:"center", alignContent:"center", width: "50px", margin: 20}}>
-            
-            {mustSpin && data?.length > 0 && prizeNumber !== null &&(
-              <Wheel
-                mustStartSpinning={mustSpin}
-                prizeNumber={prizeNumber}
-                data={data}
-                backgroundColors={['#3f51b5', '#ff5722']}
-                textColors={['#ffffff']}
-                onStopSpinning={() => {
-                  setMustSpin(false); // stop spinning after animation ends
-                }}
-              />
-              )}
-              </div>
-             
-            </div>
-            
-          }
         </Box>
       </Modal>
     </div>

@@ -1,5 +1,6 @@
 const RedemptionModel = require('../models/RedemptionModel');
 const RewardCodeModel = require('../models/RewardCodeModel');
+const nodemailer = require('nodemailer');
 const { connectedUsers, connectedVendors, pendingReceipts } = require('../connections');
 const io = require('../server');
 const db = require('../db');
@@ -48,6 +49,8 @@ const redeemCode = async (req, res) => {
     }
 
     pendingReceipts.set(receiptRoom, receiptInfo);
+    const userEmail = redemption.email
+    sendReceiptEmail( userEmail, receiptInfo)
 
   } catch (err) {
     console.error('Redemption error:', err);
@@ -80,5 +83,40 @@ const getCouponByUser = async (req, res) => {
     res.status(500).json({ message: 'Failed to retrieve coupons' });
   }
 }
+
+
+
+const sendReceiptEmail = async (userEmail, receiptInfo) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail', // or another service
+      auth: {
+        user: process.env.SMTP_USER, // your email
+        pass: process.env.SMTP_PASS  // your email password or app password
+      }
+    });
+
+    const mailOptions = {
+      from: `"Hestia Events" <${process.env.SMTP_USER}>`,
+      to: userEmail,
+      subject: `Your Discount Receipt - Order ${receiptInfo.order_number}`,
+      html: `
+        <h2>Receipt</h2>
+        <p><strong>Order:</strong> ${receiptInfo.order_number}</p>
+        <p><strong>Customer:</strong> ${receiptInfo.user_name}</p>
+        <p><strong>Vendor Business:</strong> ${receiptInfo.business_name}</p>
+        <p><strong>Vendor Name:</strong> ${receiptInfo.vendor_name}</p>
+        <p><strong>Title:</strong> ${receiptInfo.reward_title}</p>
+        <p><strong>Embers Spent:</strong> ${receiptInfo.spent}</p>
+        <p><strong>Remaining Price:</strong> $${receiptInfo.remaining_USD.toFixed(2)}</p>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`Receipt email sent to ${userEmail}`);
+  } catch (err) {
+    console.error('Error sending receipt email:', err);
+  }
+};
 
 module.exports = {redeemCode, getCouponByUser};

@@ -1,22 +1,40 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
 import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const RewardCode = ({order_number, first_name, last_name, title, size, discount, cost}) => {
     const [passcode, setPasscode] = useState(null)
+    const [alert, setAlert] = useState({ open: false, type: "", message: "" });
     const price =  (cost * (1 - discount/100)) / 100
 
     const handleSubmit = async() => {
-
         try{
             const res = await axios.put(`${API_URL}/api/rewards/redeem`, {code: passcode})
-            console.log(res?.message)
+            setPasscode()
+            setAlert({
+                open: true,
+                type: "success",
+                message: res.data?.message || "Code redeemed successfully!",
+              });
         } catch(e) {
+            setAlert({
+                open: true,
+                type: "error",
+                message: e.response?.data?.message || "Redeem failed. Try again.",
+              });
             console.error("Redeem error:", e.response?.data || e.message);
         }
+        
     }
+
+    const handleClose = () => {
+        setAlert({ ...alert, open: false });
+      };
+    
 
     return(
         <div style={container}>
@@ -66,7 +84,16 @@ const RewardCode = ({order_number, first_name, last_name, title, size, discount,
                     >Submit</Button>
             </div>
 
-            
+            <Snackbar
+                open={alert.open}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <Alert severity={alert.type} onClose={handleClose} sx={{ width: "100%" }}>
+                {alert.message}
+                </Alert>
+            </Snackbar>
          </div>
     )
 }
